@@ -40,6 +40,15 @@ action.
 - "Will someone understand this at 2am during an
   incident?" is a valid design question. Use it often.
 
+## Designing Agents
+
+Agent files are role overlays on top of this
+global config. They add only what is unique to
+the role. Before adding a section to an agent
+file, ask: does CLAUDE.md or a convention already
+cover this? If yes, skip it.
+Minimalism applies to agent design too.
+
 ## Conventions
 
 Shared conventions live in `~/.claude/conventions/`.

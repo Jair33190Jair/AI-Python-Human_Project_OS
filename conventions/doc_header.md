@@ -11,7 +11,7 @@ starts with this header:
 
 ```
 **Version:** v<MAJOR>.<MINOR> — YYYY-MM-DD
-**Status:** <Entwurf | In Review | Approved | Deprecated>
+**Status:** <Draft | In Review | Approved | Deprecated>
 **Reviewer:** <human name(s), comma-separated, or "unassigned">
 ```
 
