@@ -1,0 +1,38 @@
+# Secrets
+.credentials.json
+settings.local.json
+*.pem
+*.key
+
+# Runtime / ephemeral
+cache/
+debug/
+backups/
+file-history/
+ide/
+plans/
+plugins/
+projects/
+session-env/
+sessions/
+shell-snapshots/
+telemetry/
+todos/
+history.jsonl
+mcp-needs-auth-cache.json
+stats-cache.json
+shell-init.sh:
+
+# Personal logs
+learnings.log
+memory/
+
+# Business / project-specific decisions
+99_decisions/
+
+# Rendered artifacts (source of truth is markdown)
+CLAUDE.pdf
+
+# OS
+.DS_Store
+Thumbs.db
