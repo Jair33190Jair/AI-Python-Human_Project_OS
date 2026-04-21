@@ -19,5 +19,6 @@
       "/home/jairj/.claude"
     ]
   },
-  "effortLevel": "medium"
+  "effortLevel": "medium",
+  "model": "haiku"
 }
