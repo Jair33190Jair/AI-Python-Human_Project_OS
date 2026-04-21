@@ -27,11 +27,11 @@ shell-init.sh:
 learnings.log
 memory/
 
-# Business / project-specific decisions
-99_decisions/
+# Settings
+settings.json
+README.md
 
-# Rendered artifacts (source of truth is markdown)
-CLAUDE.pdf
+
 
 # OS
 .DS_Store
