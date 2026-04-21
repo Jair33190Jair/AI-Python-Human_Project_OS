@@ -1,1 +1,0 @@
-source ~/.zshrc 2>/dev/null || true

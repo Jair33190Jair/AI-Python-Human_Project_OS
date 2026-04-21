@@ -1,0 +1,24 @@
+{
+  "files.exclude": {
+    "sessions": true,
+    "shell-snapshots": true,
+    "shell-init.sh": true,
+    "todos": true,
+    "statsig": true,
+    ".credentials.json": true,
+    ".git": true,
+    "backups": true,
+    "cache": true,
+    "debug": true,
+    "file-history": true,
+    "history.jsonl": true,
+    "ide": true,
+    "mcp-needs-auth-cache.json": true,
+    "projects": true,
+    "session-env": true,
+    "stats-cache.json": true,
+    "telemetry": true,
+    "plans": true,
+    "plugins": true,
+  }
+}
