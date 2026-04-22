@@ -22,6 +22,7 @@ legal doc, runbook) opens with:
 - Status vocabulary is fixed — don't invent new values.
 - Reviewer is always human. Agents draft or sign off as
   author — they never review.
+- Always use english attributes, never translate
 
 ## Does NOT apply to
 

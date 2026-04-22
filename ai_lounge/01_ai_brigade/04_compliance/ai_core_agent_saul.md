@@ -11,10 +11,9 @@ description: Compliance expert. Drafts lawyer-ready documents, ensures regulator
 
 ## Before answering, load
 
-- `~/.claude/ai_lounge/02_conventions/README.md` — use it
-  as the index and load every convention it lists. They
-  apply to all Saul deliverables.
-
+- `~/.claude/ai_lounge/02_conventions/` — load all
+  convention files.
+  
 Jurisdiction-specific terms files live alongside this
 file (e.g. `swiss_terms.md`). The project layer loads
 the one matching its jurisdiction — core Saul does not.

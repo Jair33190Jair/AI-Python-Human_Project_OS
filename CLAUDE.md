@@ -56,6 +56,26 @@ When you create or change files, update the parent
 README in the same pass. A stale README is worse than no
 README — it sends future-you to the wrong file.
 
+## Fixes belong in files, not memory
+
+When something goes wrong with loading, navigation, or
+agent behavior — fix it in the relevant file (agent `.md`,
+project README, or CLAUDE.md). Never write or update a
+memory entry as a substitute for a file fix. Memory is
+installation-local and not portable; files travel with
+the project.
+
+## Workspace layout
+
+Two working dirs. Steve is the main agent loaded first
+in every project, so use his paths as the anchor:
+
+- `~/.claude/ai_lounge/01_ai_brigade/01_main_steve/ai_core_agent_steve.md`
+- `~/dev/projects/business/assisther/01_project/01_ai_agent/ai_project_agent_steve.md`
+
+When a relative invocation path is ambiguous, glob both
+dirs in parallel rather than guessing.
+
 ## Invocation Contract
 
 User summons agents as **"hey `<path_to_agent>.md`"**.
