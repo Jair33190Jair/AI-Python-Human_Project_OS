@@ -11,6 +11,18 @@ Convert a local file to clean markdown.
 
 ---
 
+## Pre-flight
+
+Resolve the path before anything else:
+
+```bash
+FILE=$(python3 -c "from pathlib import Path; import sys; print(Path(sys.argv[1]).expanduser().resolve())" "$ARG")
+```
+
+Fail immediately if the file doesn't exist.
+
+---
+
 ## Format dispatch
 
 Detect format by extension, then run the matching tier.
@@ -54,12 +66,59 @@ No fallback needed. If pandoc fails, report error.
 
 ### PPTX
 
+**Tier 1 — pandoc** (check support first)
+
 ```bash
-pandoc -f pptx -t markdown "file.pptx"
+pandoc --list-input-formats | grep -q pptx && \
+  pandoc -f pptx -t markdown "file.pptx"
 ```
 
-Note: speaker notes are preserved as blockquotes.
-No fallback needed.
+Fail signal: command errors or output empty.
+
+**Tier 2 — python-pptx**
+
+```python
+import sys
+from pathlib import Path
+from pptx import Presentation
+
+# idx=4294967295 is the Google Slides / generic slide-number sentinel
+SKIP_IDX = {4294967295}
+
+path = Path(sys.argv[1]).expanduser().resolve()
+prs = Presentation(path)
+
+for i, slide in enumerate(prs.slides, 1):
+    print(f"## Slide {i}")
+    for shape in slide.shapes:
+        if not shape.has_text_frame:
+            continue
+        if shape.is_placeholder:
+            ph_idx = shape.placeholder_format.idx
+            if ph_idx in SKIP_IDX:
+                continue
+            text = shape.text_frame.text.strip()
+            if text:
+                print(f"### {text}")
+        else:
+            for para in shape.text_frame.paragraphs:
+                t = para.text.strip()
+                if t:
+                    prefix = "  " * para.level + "-"
+                    print(f"{prefix} {t}")
+    if slide.has_notes_slide:
+        notes = slide.notes_slide.notes_text_frame.text.strip()
+        if notes:
+            print(f"> {notes}")
+    print()
+```
+
+If python-pptx is missing: `pip install python-pptx --break-system-packages`
+
+**Tier 3 — LLM cleanup**
+
+Only if Tier 1/2 output is structurally noisy.
+Strip noise, preserve content, never infer.
 
 ---
 
