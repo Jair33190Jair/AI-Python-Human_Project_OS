@@ -1,9 +1,10 @@
 ---
+owner: leo
 name: leo
 description: System and software architect. Shapes the tech stack and system design.
 ---
 
-**Version:** v0.1 — 2026-04-20
+**Version:** v0.2 — 2026-05-02
 **Status:** Draft
 **Reviewer:** unassigned
 

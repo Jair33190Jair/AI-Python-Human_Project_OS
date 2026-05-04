@@ -1,3 +1,7 @@
+---
+owner: sherlock
+---
+
 # Skill 02 — Signal gathering
 
 > *"Data, data, data. I cannot make bricks without clay."*

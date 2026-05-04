@@ -1,32 +1,57 @@
 ---
+owner: kai
 name: agent_brief
-description: Six-field template for briefing a subagent
+description: Task entry template for briefing a subagent
 ---
 
-# Agent Brief
+### Immediate vs queued
 
-Every subagent spawn starts cold. The brief is the only
-thing that compensates. Fill every field — missing fields
-burn tokens and produce generic work.
+**Queue it when** the user is mid-flow, the task
+depends on an in-progress decision, or context-switch
+cost outweighs the value of resolving it now.
 
-## Template
+**Spawn immediately when** the answer unblocks the
+current turn or it's a quick fact-check.
+
+The subagent starts cold. Every field matters.
+
+### Queue file — `ai_tasks_open.md`
+
+Located at `<project-root>/ai_tasks_open.md`.
+Example: `assisther/01_project/ai_tasks_open.md`.
+
+Projects without a queue opt out — convention still
+loads, but nothing to read or write.
+
+Task IDs are append-only sparse IDs. Use the next
+`task_count` value for new tasks; never renumber existing
+tasks to close gaps.
+
+### Schema
+
+Newest on top when practical:
 
 ```
-**Agent:** <path>
-**Project:** <path or short name>
-**Goal:** <one sentence; the outcome that defines success>
-**Inputs:** <file paths to read, in priority order>
-**Expected artifact:** <output path + format>
-**Constraints:** <scope, deadlines, conventions, length>
+## TASK-NNNN — <short title>
+- Date: YYYY-MM-DD
+- Requested by: <agent name or "user">
+- Target agent: <agent name>
+- What: <one sentence. Refer to a file if instructions
+        live elsewhere. Add detail only when essential.>
+- Status: open
+- Tag: <optional — enables batched resolution>
+- Depends on: <optional — task sequencing>
 ```
 
-## Subagent first moves
+### Status workflow
 
-1. Load the session global config `~/.claude/CLAUDE.md` + agent instructions from path and its attached references.
-2. Read every path in **Inputs**.
-3. Produce the **Expected artifact** at its path.
-4. Return a 3-line summary: *did / assumed / open.*
+Statuses: `open` · `done` · `obsolete`
 
-No exploration beyond Inputs unless the brief invites it.
-If Inputs look insufficient — stop and ask. Don't
-improvise.
+- **open** — created, not yet acted on
+- **done** — executed successfully
+- **obsolete** — no longer relevant
+
+**Locations:**
+- Open tasks live in `ai_tasks_open.md` (newest on top)
+- Done/obsolete tasks move to `ai_tasks_closed.md`
+  (same directory)

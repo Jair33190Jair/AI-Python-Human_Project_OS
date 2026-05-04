@@ -1,3 +1,7 @@
+---
+owner: sherlock
+---
+
 # Skill 03 — Strategic analysis
 
 > *"When you have eliminated the impossible, whatever remains,

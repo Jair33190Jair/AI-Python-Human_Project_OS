@@ -1,3 +1,7 @@
+---
+owner: sherlock
+---
+
 # Skill 01 — Discovery
 
 > *"Before any theory, Watson, the facts. Let us see who already

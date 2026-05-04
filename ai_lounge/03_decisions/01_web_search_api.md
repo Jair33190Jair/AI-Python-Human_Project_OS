@@ -1,3 +1,7 @@
+---
+owner: kai
+---
+
 # Competitive Intelligence Tool Decision
 **Date:** April 15, 2026  
 **Context:** Selecting web search tooling for AI-powered competitive analysis across medical device products built with Claude.

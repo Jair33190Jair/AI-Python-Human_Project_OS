@@ -1,3 +1,7 @@
+---
+owner: kai
+---
+
 # Friction
 
 Append a line whenever something annoys you *while*
@@ -19,4 +23,6 @@ entries, things are fine — don't build more around it.
 If it ever gets too long to skim in 2 minutes, *then*
 bring in an agent to summarize. Not before.
 
+
+### Maintainance stuff
 ---

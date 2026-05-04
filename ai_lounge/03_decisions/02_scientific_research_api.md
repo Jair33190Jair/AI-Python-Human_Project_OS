@@ -1,3 +1,7 @@
+---
+owner: kai
+---
+
 # Research API Decision Document
 
 > **Decision:** Academic research database & API selection for evidence-based client support  

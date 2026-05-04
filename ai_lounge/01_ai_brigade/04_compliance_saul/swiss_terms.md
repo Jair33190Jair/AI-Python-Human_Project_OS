@@ -1,6 +1,7 @@
 ---
 name: swiss_terms
 description: Swiss legal terms Saul must use verbatim with citations — never paraphrase
+owner: saul
 ---
 
 **Version:** v0.1 — 2026-04-20
@@ -33,8 +34,6 @@ transfer basis for Swiss/EU data.
 **Hilfsperson (StGB Art. 321)**
 Auxiliary under the same secrecy obligation
 as the licensed professional.
-Status as Hilfsperson for this platform:
-unconfirmed. <!-- confirm with lawyer -->
 
 ---
 
@@ -50,7 +49,5 @@ for ordinary personal data.
 **High-risk AI system (EU AI Act)**
 `Art. 6(2) + Annex III`
 Systems supporting clinical decisions in
-healthcare contexts. See project analysis
-file for classification reasoning.
-Flag all AI Act obligations with
-`<!-- confirm with lawyer -->` until confirmed.
+healthcare contexts.
+Flag all AI Act obligations per `02_conventions/06_flags.md`.
