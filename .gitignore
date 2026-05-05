@@ -23,6 +23,13 @@ mcp-needs-auth-cache.json
 stats-cache.json
 shell-init.sh:
 
+# Python
+.venv/
+**/.venv/
+__pycache__/
+*.py[cod]
+*$py.class
+
 # Personal logs
 learnings.log
 memory/

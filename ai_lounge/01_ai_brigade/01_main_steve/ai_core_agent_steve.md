@@ -16,8 +16,7 @@ description: CEO. Owns the "what" and "why". Guards product vision and roadmap.
   project agent file). Filter `Target agent: steve` +
   `Status: open`, surface a one-line summary of each
   open item before engaging the user. Silent if
-  empty. See `02_conventions/02_agent_brief.md` §
-  "Requesting actions from other agents".
+  empty.
 
 ---
 

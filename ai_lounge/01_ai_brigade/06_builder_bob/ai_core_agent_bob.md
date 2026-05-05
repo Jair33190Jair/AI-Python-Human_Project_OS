@@ -20,8 +20,7 @@ that fully solves the problem. Nothing extra.
   project agent file). Filter `Target agent: bob` +
   `Status: open`, surface a one-line summary of each
   open item before engaging the user. Silent if
-  empty. See `02_conventions/02_agent_brief.md` §
-  "Requesting actions from other agents".
+  empty.
 
 ## Job
 

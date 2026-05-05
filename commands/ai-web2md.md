@@ -1,5 +1,9 @@
 ---
 owner: kai
+human_status:  # stable | needs-review | draft
+model: claude-haiku-4-5-20251001  # mechanical: strip nav/footers,
+                                   # apply explicit rules, structured
+                                   # output — no deep reasoning needed.
 ---
 
 # /ai-web2md
@@ -10,57 +14,51 @@ Fetch a URL and return its content as clean markdown.
 
 ---
 
-## Tier escalation
-
-Always start at Tier 1. Step up only when the previous
-tier fails. Stop at the first tier that returns usable
-content.
-
-### Tier 1 — curl + pandoc + self-cleanup
+## Extraction
 
 ```bash
-curl -sL "URL" | pandoc -f html -t markdown_strict --strip-comments
+~/.claude/helpers/.venv/bin/python ~/.claude/helpers/fetch.py "$URL"
 ```
 
-Always run this first. After conversion, **self-clean
-inline**: strip nav, social icons, duplicate blocks,
-dropdown option lists, footers. Keep all substantive
-content. No external tool, no extra model call.
+`fetch.py` selects the right path automatically:
 
-**Fail signal:** raw output < 30 words (JS skeleton).
+- **Fedlex** → metadata → XML filestore → markdown.
+- **EUR-Lex** → CELEX → CELLAR XHTML → markdown.
+- **Basel-Stadt** → OpenDataSoft → markdown.
+- **PDF URLs** → pdftotext, OCR if needed.
+- **Everything else** → Firecrawl only after user
+  approval. If `fetch.py` exits 2, ask before re-running:
 
----
+```bash
+~/.claude/helpers/.venv/bin/python ~/.claude/helpers/fetch.py "$URL" --allow-paid
+```
 
-### Tier 2 — WebFetch (JS-rendered pages)
-
-Use `WebFetch`. Covers pages where Tier 1 returns empty.
-Apply the same inline self-cleanup to the result.
-
----
-
-### Tier 3 — Firecrawl / Bright Data (not configured)
-
-Not yet available. Add provider details here when ready.
+Exit 1 means inaccessible or failed. Never fabricate
+content.
 
 ---
 
-## Fallback behaviour
+## Verification
 
-- Tier 1 < 30w → go to Tier 2.
-- Tier 2 empty → mark `"inaccessible"`, report to user.
-- Paywalled / login-walled → mark `"inaccessible"`.
-  Never fabricate content.
+After changing `fetch.py`, resolvers, or extractors, run:
+
+```bash
+~/.claude/helpers/.venv/bin/python ~/.claude/helpers/smoke_fetch.py
+```
+
+---
+
+## Content completeness rules
+
+- **Include all appendices and annexes.** Anhänge,
+  annexes, schedules, end-matter — never stop at the
+  last main article.
+- If an annex is only referenced, include a short stub
+  with the article ref and official pointer.
+- No blank numbered or lettered items.
 
 ---
 
 ## Output
 
-Return as a markdown block:
-
-```
-url:        <string>
-title:      <string>
-fetch_date: YYYY-MM-DD
-tier_used:  1 | 2
-content:    <markdown string>
-```
+Return stdout from `fetch.py` verbatim.

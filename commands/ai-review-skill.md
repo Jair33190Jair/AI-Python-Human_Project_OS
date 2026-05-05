@@ -1,6 +1,7 @@
 ---
 description: Review an AI instruction asset for minimalism, completeness, portability, redundancy, context size, compatibility, and hallucination resistance. Findings only, no auto-fix.
 argument-hint: <path/to/SKILL.md|path/to/command.md|path/to/skill-folder>
+status: draft  # flip to `stable` when satisfied
 ---
 
 You are running a **skill-review** audit.

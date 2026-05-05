@@ -1,6 +1,7 @@
 ---
 description: Run a legal doc-drafting prompt — makes patch/regenerate decision, loads all sources, drafts, and gates on the prompt's pre-output checklist before emitting.
 argument-hint: <path/to/drafting_prompt.md>
+status: draft  # flip to `stable` when satisfied
 ---
 
 You are running a **prompt-run** execution.

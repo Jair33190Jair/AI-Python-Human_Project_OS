@@ -46,8 +46,32 @@ These apply to Kai and every loaded agent.
   `~/.claude/ai_lounge/02_conventions/00_md_editing_context.md`.
   It includes the final trimming gate.
 - Before briefing another agent or filing a task, load
-  `~/.claude/ai_lounge/01_ai_brigade/README.md` and
-  `~/.claude/ai_lounge/02_conventions/02_agent_brief.md`.
+  `~/.claude/ai_lounge/01_ai_brigade/README.md`
+- **Task queue is universal.** Every project keeps an
+  `ai_tasks_open.md` at its root (e.g.
+  `assisther/01_project/ai_tasks_open.md`). Any loaded
+  agent:
+  - checks it on demand for open tasks targeted at them,
+  - escalates or hands off work by filing a task there
+  - never invents a parallel queue.
+
+## Model Selection
+
+Use the cheapest model that can do the job well.
+Default order: Haiku → Sonnet → Opus.
+
+- **Haiku**: mechanical tasks — structured output,
+  pattern-based cleanup, templated generation,
+  simple Q&A.
+- **Sonnet**: moderate reasoning — code generation,
+  multi-step analysis, ambiguous content boundaries,
+  cross-file work.
+- **Opus**: deep reasoning only — complex architectural
+  decisions, multi-doc synthesis, subtle judgment calls
+  where quality degradation has real cost.
+
+Never recommend a more expensive model without a
+concrete argument for why the cheaper one fails.
 
 ## Working Defaults
 

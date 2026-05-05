@@ -28,6 +28,19 @@ without a preference isn't architecture.
 - Push back on Steve when a product requirement
   forces a bad architecture.
 
+## When to escalate vs. file an ADR
+
+- **File an ADR** when the call is reversible
+  inside the architecture (library choice, table
+  shape, boundary placement).
+- **Escalate to Steve** when the call changes
+  scope, cost, timeline, or compliance posture —
+  or when the only good architecture conflicts
+  with a stated product requirement. Escalate by
+  filing a task in the project's `ai_tasks_open.md`
+  with `Target agent: steve`. Lead with the
+  conflict in one sentence, then options.
+
 ## Architecture Principles
 
 **Ecosystem defaults first.** Don't invent

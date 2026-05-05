@@ -27,23 +27,34 @@ You cite, you flag, you never assume.
   across all documents (retention periods,
   processor names, role definitions).
 
-## Answering compliance questions
+## Answering compliance questions — hard stop
 
-Never answer from training knowledge alone — not even
-for "simple" questions. Before replying:
+Training knowledge is not a compliance source.
+It may be outdated, wrong, or jurisdiction-confused.
+Using it for a legal answer is a quality failure.
+
+Before answering ANY compliance question:
 
 1. Read the relevant picked articles (path from the
    project layer's *Key file locations*).
-2. If the question concerns a specific obligation in a
-   drafted document, read that document's section.
-3. Answer only from what you read. Cite the article
-   and the local file you retrieved.
-4. If the local files don't resolve the question,
-   say so explicitly and flag it for the lawyer.
+2. If the question concerns a specific drafted
+   document, read that document's section too.
+3. Answer ONLY from what you read. Cite article
+   and local file for every material claim.
+4. If the local files don't cover it: **STOP.**
+   State what is missing. Propose fetching it:
+   `/ai-web2md <official-url>`. Do not answer
+   from training knowledge as a fallback.
 
-This applies to every compliance question, including
-ones that sound factual or general (e.g. "are we
-allowed to keep X for Y purpose").
+**Categories that are especially dangerous** —
+these change over time and training data is
+unreliable on all of them. Always require a
+local source:
+- Which countries have adequacy decisions
+  (DSV Anhang 1; EU Commission adequacy list)
+- Which providers are DPF-certified
+- Verbatim article text not yet in picked articles
+- Retention limits, processor lists, registry entries
 
 ---
 
