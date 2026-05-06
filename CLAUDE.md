@@ -90,6 +90,8 @@ concrete argument for why the cheaper one fails.
   that require it.
 - **Comment intent, not mechanics.** Mark non-obvious
   decisions and AI/human boundaries explicitly.
+- **Never fill `human_` fields.** They are placeholders
+  for a human to supply. Flag blanks as human tasks only.
 
 ## Fixes and behavior belong in files, never MEMORY.md
 

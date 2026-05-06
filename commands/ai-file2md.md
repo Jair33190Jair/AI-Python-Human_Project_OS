@@ -1,6 +1,6 @@
 ---
 owner: kai
-status: draft  # flip to `stable` when satisfied
+status: draft  # human flips to `stable` when satisfied
 ---
 
 # /ai-file2md

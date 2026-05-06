@@ -20,14 +20,11 @@ Fetch a URL and return its content as clean markdown.
 ~/.claude/helpers/.venv/bin/python ~/.claude/helpers/fetch.py "$URL"
 ```
 
-`fetch.py` selects the right path automatically:
+`fetch.py` selects the right resolver automatically
+(Fedlex, EUR-Lex, Basel-Stadt, PDF, Firecrawl).
 
-- **Fedlex** → metadata → XML filestore → markdown.
-- **EUR-Lex** → CELEX → CELLAR XHTML → markdown.
-- **Basel-Stadt** → OpenDataSoft → markdown.
-- **PDF URLs** → pdftotext, OCR if needed.
-- **Everything else** → Firecrawl only after user
-  approval. If `fetch.py` exits 2, ask before re-running:
+Firecrawl requires user approval. If `fetch.py` exits 2,
+ask before re-running:
 
 ```bash
 ~/.claude/helpers/.venv/bin/python ~/.claude/helpers/fetch.py "$URL" --allow-paid
@@ -46,6 +43,9 @@ After changing `fetch.py`, resolvers, or extractors, run:
 ~/.claude/helpers/.venv/bin/python ~/.claude/helpers/smoke_fetch.py
 ```
 
+Exit 0 = all resolvers pass. Any other exit = stop and
+report failures before proceeding.
+
 ---
 
 ## Content completeness rules
@@ -62,3 +62,4 @@ After changing `fetch.py`, resolvers, or extractors, run:
 ## Output
 
 Return stdout from `fetch.py` verbatim.
+If stdout is empty, report failure — do not output anything.
