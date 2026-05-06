@@ -1,7 +1,7 @@
 ---
 description: Review a skill or slash command for instruction quality and scriptability. Not for agent profiles or drafting prompts. Findings only — no auto-fix.
 argument-hint: <path/to/SKILL.md|path/to/command.md|path/to/skill-folder>
-status: draft  # human flips to `stable` when satisfied
+status: stable  # human flips to `stable` when satisfied
 owner: kai
 ---
 
