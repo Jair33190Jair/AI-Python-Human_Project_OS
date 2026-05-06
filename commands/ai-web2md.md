@@ -10,11 +10,20 @@ model: claude-haiku-4-5-20251001  # mechanical: strip nav/footers,
 
 Fetch a URL and return its content as clean markdown.
 
-**Argument:** one URL.
+**Argument:** one http(s) URL.
 
 ---
 
 ## Extraction
+
+Run preflight first:
+
+```bash
+python3 ~/.claude/commands/support/ai-web2md-preflight.py "$ARGUMENTS"
+```
+
+If preflight blocks, report its message and stop.
+Set `$URL` to the validated `url:` value.
 
 ```bash
 ~/.claude/helpers/.venv/bin/python ~/.claude/helpers/fetch.py "$URL"
