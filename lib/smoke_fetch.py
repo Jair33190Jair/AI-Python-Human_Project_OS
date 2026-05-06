@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Live smoke checks for helpers/fetch.py.
+Live smoke checks for lib/fetch.py.
 
 Requires network access. Exits non-zero on extraction regressions.
 """

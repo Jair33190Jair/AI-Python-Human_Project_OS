@@ -26,7 +26,7 @@ If preflight blocks, report its message and stop.
 Set `$URL` to the validated `url:` value.
 
 ```bash
-~/.claude/helpers/.venv/bin/python ~/.claude/helpers/fetch.py "$URL"
+~/.claude/lib/.venv/bin/python ~/.claude/lib/fetch.py "$URL"
 ```
 
 `fetch.py` selects the right resolver automatically
@@ -36,7 +36,7 @@ Firecrawl requires user approval. If `fetch.py` exits 2,
 ask before re-running:
 
 ```bash
-~/.claude/helpers/.venv/bin/python ~/.claude/helpers/fetch.py "$URL" --allow-paid
+~/.claude/lib/.venv/bin/python ~/.claude/lib/fetch.py "$URL" --allow-paid
 ```
 
 Exit 1 means inaccessible or failed. Never fabricate
@@ -49,7 +49,7 @@ content.
 After changing `fetch.py`, resolvers, or extractors, run:
 
 ```bash
-~/.claude/helpers/.venv/bin/python ~/.claude/helpers/smoke_fetch.py
+~/.claude/lib/.venv/bin/python ~/.claude/lib/smoke_fetch.py
 ```
 
 Exit 0 = all resolvers pass. Any other exit = stop and

@@ -32,14 +32,3 @@ for each new task. Never renumber.
 
 ---
 
-## TASK-0001 — Rename helpers/ to lib/
-- Date: 2026-05-06
-- Requested by: user
-- Target agent: bob
-- What: Rename `~/.claude/helpers/` to `~/.claude/lib/` — it's
-  a proper Python package now (resolvers/, extractors/). Update
-  all references in commands/ and README. Run smoke_fetch after.
-- Status: open
-- Tag: housekeeping
-
----

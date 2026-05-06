@@ -39,6 +39,28 @@ def resolve_anchor(raw: str) -> tuple[Path | None, str | None]:
     return None, f"instruction anchor not found: {raw}"
 
 
+def display_path(path: Path) -> str:
+    try:
+        return str(path.relative_to(ROOT))
+    except ValueError:
+        return str(path)
+
+
+def reference_base(anchor: Path) -> Path:
+    try:
+        anchor.relative_to(ROOT)
+        return ROOT
+    except ValueError:
+        pass
+
+    parts = anchor.parts
+    if ".claude" in parts:
+        index = parts.index(".claude")
+        if index > 0 and index + 1 < len(parts) and parts[index + 1] == "commands":
+            return Path(*parts[:index])
+    return ROOT
+
+
 def line_count(path: Path) -> int:
     return len(path.read_text(encoding="utf-8").splitlines())
 
@@ -78,13 +100,13 @@ def instruction_file(path: Path) -> bool:
     return path.suffix == ".md" and path.exists() and path.is_file()
 
 
-def direct_references(anchor: Path, text: str) -> tuple[list[Path], list[str]]:
+def direct_references(anchor: Path, text: str, base: Path) -> tuple[list[Path], list[str]]:
     refs: list[Path] = []
     missing: list[str] = []
     for raw in sorted(path_candidates(text)):
         if not looks_like_path(raw):
             continue
-        candidate = resolve_path(raw, ROOT)
+        candidate = resolve_path(raw, base)
         if instruction_file(candidate):
             refs.append(candidate)
         elif not candidate.exists() and raw.endswith((".md", ".py", ".json", ".yaml", ".yml")):
@@ -97,8 +119,7 @@ def stale_scan(paths: list[Path]) -> list[str]:
     for path in paths:
         for number, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
             if STALE_TEXT.search(line):
-                rel = path.relative_to(ROOT)
-                findings.append(f"{rel}:{number}: {line.strip()}")
+                findings.append(f"{display_path(path)}:{number}: {line.strip()}")
     return findings
 
 
@@ -125,7 +146,8 @@ def main() -> int:
 
     assert anchor is not None
     text = anchor.read_text(encoding="utf-8")
-    refs, missing = direct_references(anchor, text)
+    base = reference_base(anchor)
+    refs, missing = direct_references(anchor, text, base)
     files = [anchor, SUPPORT_RUBRIC, *refs]
     files = sorted(set(files))
     anchor_lines = line_count(anchor)
@@ -133,11 +155,11 @@ def main() -> int:
     stale = stale_scan([anchor, *refs])
 
     print("ai-review-skill preflight")
-    print(f"anchor: {anchor.relative_to(ROOT)}")
+    print(f"anchor: {display_path(anchor)}")
     print(f"anchor_lines: {anchor_lines}")
     print(f"support_rubric: {'ok' if SUPPORT_RUBRIC.exists() else 'missing'}")
     print(f"context_load: {label} — {len(files)} files loaded, chain depth 1")
-    print_list("direct_instruction_refs", [str(path.relative_to(ROOT)) for path in refs])
+    print_list("direct_instruction_refs", [display_path(path) for path in refs])
     print_list("missing_path_refs", missing)
     print_list("stale_scan", stale)
 

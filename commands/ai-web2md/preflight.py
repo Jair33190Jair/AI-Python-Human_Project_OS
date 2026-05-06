@@ -10,9 +10,9 @@ from urllib.parse import urlparse
 
 
 ROOT = Path(__file__).resolve().parents[2]
-PYTHON = ROOT / "helpers/.venv/bin/python"
-FETCH = ROOT / "helpers/fetch.py"
-BOOTSTRAP = ROOT / "helpers/bootstrap.sh"
+PYTHON = ROOT / "lib/.venv/bin/python"
+FETCH = ROOT / "lib/fetch.py"
+BOOTSTRAP = ROOT / "lib/bootstrap.sh"
 
 
 def valid_url(value: str) -> bool:
