@@ -11,7 +11,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[2]
-SUPPORT_RUBRIC = ROOT / "commands/support/ai-review-skill-rubric.md"
+SUPPORT_RUBRIC = ROOT / "commands/ai-review-skill/rubric.md"
 
 PATH_TOKEN = re.compile(r"(?<![\w.-])(?:~/?|[A-Za-z0-9_./-]+/)[A-Za-z0-9_./~-]+")
 CODE_SPAN = re.compile(r"`([^`\n]+)`")

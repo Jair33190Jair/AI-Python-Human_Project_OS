@@ -89,7 +89,7 @@ Flag deterministic, structural, or pattern-matchable workflow
 steps where a linter/script would produce the same result at zero
 token cost.
 
-`~/.claude/commands/support/ai-review-skill-preflight.py`
+`~/.claude/commands/ai-review-skill/preflight.py`
 already covers anchor file/folder resolution, support path
 existence, anchor line count, context-load labeling, and the
 first stale-copy scan pass.

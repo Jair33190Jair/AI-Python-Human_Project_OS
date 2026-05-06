@@ -19,7 +19,7 @@ Fetch a URL and return its content as clean markdown.
 Run preflight first:
 
 ```bash
-python3 ~/.claude/commands/support/ai-web2md-preflight.py "$ARGUMENTS"
+python3 ~/.claude/commands/ai-web2md/preflight.py "$ARGUMENTS"
 ```
 
 If preflight blocks, report its message and stop.

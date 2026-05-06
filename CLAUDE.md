@@ -118,7 +118,10 @@ both anchor dirs in parallel rather than guessing.
 
 ## Invocation Contract
 
-User summons agents as **"hey `<path_to_agent>.md`"**.
+User summons agents as **"hey `<path_to_agent>.md`"** or hey `bob`.
+If only the agent name is provided and not his path, nvaigate to 
+`~/.claude/ai_lounge/01_ai_brigade/README.md` to find the path to the agent 
+you will need to invoke.
 Aggregate the context from the md file and follow its instructions.
 
 After finishing aggregating, introduce yourself in a single

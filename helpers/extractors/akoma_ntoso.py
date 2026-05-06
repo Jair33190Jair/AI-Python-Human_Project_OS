@@ -110,6 +110,44 @@ def _parse_block_list(block_list_el) -> list[str]:
     return lines
 
 
+def _parse_table(table_el, heading: str = "") -> list[str]:
+    rows = []
+    for tr in table_el.findall(_q("tr")):
+        cells = [
+            _text(td).strip()
+            for td in tr.findall(_q("td"))
+        ]
+        cells = [re.sub(r"\s+", " ", cell) for cell in cells]
+        if any(cells):
+            rows.append(cells)
+
+    if not rows:
+        return []
+
+    width = max(len(row) for row in rows)
+    rows = [row + [""] * (width - len(row)) for row in rows]
+    if width == 3 and re.search(
+        r"Staaten|States|territories",
+        heading,
+        re.I,
+    ):
+        headers = (
+            ["No.", "State / territory", "Remarks"]
+            if re.search(r"States|territories", heading, re.I)
+            else ["Nr.", "Staat / Gebiet", "Bemerkung"]
+        )
+    else:
+        headers = [f"Spalte {i}" for i in range(1, width + 1)]
+
+    lines = [
+        "| " + " | ".join(headers) + " |",
+        "| " + " | ".join(["---"] * width) + " |",
+    ]
+    for row in rows:
+        lines.append("| " + " | ".join(row) + " |")
+    return ["\n".join(lines)]
+
+
 def _as_reference(el) -> str:
     for ref in el.findall(f".//{_q('ref')}"):
         text = re.sub(r"\s+", " ", _text(ref)).strip()
@@ -200,6 +238,8 @@ def _parse_annex(annex_el) -> str:
                 lines.append(t)
         elif local == "blockList":
             lines.extend(_parse_block_list(child))
+        elif local == "table":
+            lines.extend(_parse_table(child, "\n".join(lines)))
         i += 1
 
     return "\n\n".join(lines)
@@ -248,7 +288,7 @@ def _parse_article(article_el) -> str:
     body = "\n\n".join(body_lines)
     if body:
         return f"{header}\n\n{body}"
-    return header
+    return ""
 
 
 def extract(content: bytes, source_url: str = "") -> str:

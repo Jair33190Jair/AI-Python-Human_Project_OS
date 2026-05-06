@@ -12,6 +12,7 @@ exit 1:  inaccessible / extraction failed
 exit 2:  would need Firecrawl (paid) but --allow-paid not set
 """
 import sys
+from datetime import date
 from pathlib import Path
 from urllib.parse import urlparse
 
@@ -24,6 +25,36 @@ from resolvers import fedlex, eurlex, basel_ods
 from extractors import pdf
 
 RESOLVERS = [fedlex, eurlex, basel_ods]
+
+
+def _title_from_markdown(markdown: str) -> str:
+    for line in markdown.splitlines():
+        if line.startswith("# "):
+            return line.removeprefix("# ").strip()
+    return "Untitled legal source"
+
+
+def _yaml_string(value: str) -> str:
+    escaped = value.replace("\\", "\\\\").replace('"', '\\"')
+    return f'"{escaped}"'
+
+
+def _with_metadata(markdown: str, source_url: str) -> str:
+    body = markdown.lstrip()
+    title = _title_from_markdown(body)
+    frontmatter = "\n".join(
+        [
+            "---",
+            f"title: {_yaml_string(title)}",
+            f"source_url: {_yaml_string(source_url)}",
+            f"retrieved_at: {date.today().isoformat()}",
+            "extraction_status: success",
+            "warnings:",
+            "---",
+            "",
+        ]
+    )
+    return frontmatter + body
 
 
 def _pdf_content(url: str) -> bytes | None:
@@ -85,7 +116,7 @@ def main() -> None:
             name = resolver.__name__.rsplit(".", 1)[-1]
             print(name, file=sys.stderr)
             try:
-                print(resolver.resolve(url))
+                print(_with_metadata(resolver.resolve(url), url))
             except Exception as e:
                 print(f"error: {e}", file=sys.stderr)
                 sys.exit(1)
@@ -95,7 +126,10 @@ def main() -> None:
     if pdf_bytes is not None:
         print("pdf", file=sys.stderr)
         try:
-            print(pdf.extract(pdf_bytes, source_url=url))
+            print(_with_metadata(
+                pdf.extract(pdf_bytes, source_url=url),
+                url,
+            ))
         except Exception as e:
             print(f"error: {e}", file=sys.stderr)
             sys.exit(1)
@@ -104,7 +138,7 @@ def main() -> None:
     if allow_paid:
         print("firecrawl", file=sys.stderr)
         try:
-            print(_fetch_firecrawl(url))
+            print(_with_metadata(_fetch_firecrawl(url), url))
         except Exception as e:
             print(f"error: {e}", file=sys.stderr)
             sys.exit(1)

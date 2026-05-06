@@ -35,7 +35,7 @@ CASES = [
     ),
     (
         "ticino-regpsi",
-        "https://m3.ti.ch/CAN/RLeggi/public/index.php/raccolta-leggi/pdfatto/atto/7543",
+        "https://m3.ti.ch/CAN/RLeggi/public/index.php/raccolta-leggi/pdfatto/atto/12123",
         r"^## Art\.",
         21,
     ),
