@@ -1,15 +1,18 @@
 """
-Resolver for eur-lex.europa.eu ELI URLs.
+Resolver for eur-lex.europa.eu legal URLs.
 
-Strategy: ELI → CELEX ID → CELLAR XHTML → eurlex_html extractor
+Strategy: ELI/CELEX → CELEX ID → CELLAR XHTML → eurlex_html extractor
 """
 import re
+from urllib.parse import parse_qs, urlparse
 
 import requests
 
 from extractors import eurlex_html
 
-PATTERN = re.compile(r"eur-lex\.europa\.eu/eli/(.+)")
+PATTERN = re.compile(
+    r"eur-lex\.europa\.eu/(?:eli/|legal-content/)"
+)
 
 _TYPE_LETTER = {"reg": "R", "dir": "L", "dec": "D"}
 _CELLAR_SPARQL = "https://publications.europa.eu/webapi/rdf/sparql"
@@ -81,10 +84,27 @@ def _eli_to_celex(eli_path: str) -> str:
     return f"3{year}{letter}{int(number):04d}"
 
 
+def _legal_content_to_celex(url: str) -> str:
+    parsed = urlparse(url)
+    params = parse_qs(parsed.query)
+    uri = (params.get("uri") or [""])[0]
+    m = re.search(r"CELEX:([0-9A-Z]+)", uri, re.I)
+    if not m:
+        raise ValueError(f"Cannot parse CELEX URI: {url}")
+    return m.group(1).upper()
+
+
 def _eli_lang(eli_path: str) -> str:
     parts = eli_path.strip("/").split("/")
     if len(parts) >= 5 and parts[3] == "oj":
         return _LANG_CODES.get(parts[4], "EN")
+    return "DE"
+
+
+def _legal_content_lang(url: str) -> str:
+    parts = urlparse(url).path.strip("/").split("/")
+    if len(parts) >= 2 and parts[0] == "legal-content":
+        return _LANG_CODES.get(parts[1].lower(), parts[1].upper())
     return "DE"
 
 
@@ -140,10 +160,14 @@ LIMIT 1
 
 
 def resolve(url: str) -> str:
-    m = PATTERN.search(url)
-    eli_path = m.group(1)
-    celex = _eli_to_celex(eli_path)
-    lang = _eli_lang(eli_path)
+    parsed = urlparse(url)
+    if parsed.path.startswith("/eli/"):
+        eli_path = parsed.path.removeprefix("/eli/")
+        celex = _eli_to_celex(eli_path)
+        lang = _eli_lang(eli_path)
+    else:
+        celex = _legal_content_to_celex(url)
+        lang = _legal_content_lang(url)
     item_url = _cellar_item_url(celex, lang)
     resp = requests.get(
         item_url,
