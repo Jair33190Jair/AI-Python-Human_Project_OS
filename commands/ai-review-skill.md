@@ -1,7 +1,7 @@
 ---
 description: Review a skill or slash command for instruction quality and scriptability. Not for agent profiles or drafting prompts. Findings only — no auto-fix.
 argument-hint: <path/to/SKILL.md|path/to/command.md|path/to/skill-folder>
-status: stable  # human flips to `stable` when satisfied
+status: refining  # human flips to `stable` when satisfied
 owner: kai
 ---
 
@@ -48,6 +48,7 @@ From the anchor, extract:
 
 For slash commands, treat `$ARGUMENTS`, output rules, file writes,
 and fields consumed by downstream commands as contracts.
+Apply S3 from the rubric when judging validation gates.
 
 Read only referenced files required to verify the workflow.
 Do not crawl the project.
@@ -71,6 +72,26 @@ Record:
 
 Print, in order: S1–S11 table; one decision line; S12 table
 only if flagged; metrics block.
+
+Use exactly one decision label:
+
+| Decision | Use when |
+|---|---|
+| Patch | The asset is structurally sound and findings are local refinements. |
+| Recreate | Core contracts are missing, stale, or contradictory. |
+| No change | No material findings; scriptability is acceptable as-is. |
+
+Choose `Recreate` when targeted edits would preserve a bad
+structure instead of fixing the asset.
+
+If the decision is `Recreate`, say whether the next step is
+answering focused AI questions or drafting from existing sources.
+
+Decision schema:
+
+```text
+Decision: <Patch | Recreate | No change> — <one sentence reason>
+```
 
 Use these schemas:
 

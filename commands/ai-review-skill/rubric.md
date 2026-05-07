@@ -23,19 +23,47 @@ Severity: High.
 
 **S3 — Completeness**  
 Must include every required source, validation step, and output
-rule needed to execute, including an output validation gate.  
-Fail: missing source, hidden prerequisite, or no output gate.  
+rule needed to execute.
+
+Input validation must inspect the actual input artifact before it
+is used. Output validation must run on the written output, or on
+the existing output accepted as no-change. Pre-validation of a
+planned output may supplement this, but must not replace validating
+the concrete file.
+
+Source warnings may be carried forward as structured output
+metadata, for example a `warnings:` frontmatter field, when the
+output schema defines it.
+
+Fail: missing source, hidden prerequisite, no input validation
+gate, no validation of actual written/accepted output, or
+discarded source warnings that the schema can preserve.  
 Severity: High.
 
-**S4 — Minimalism**  
-Flag generic advice, repeated principles, long examples, or
-support files that do not change execution.  
-Severity: Low.
+**S4 — Minimalism / prose clarity / simplicity**  
+Flag generic advice, repeated principles, long examples,
+overbuilt workflows, needless abstraction, or support files that
+do not change execution.
+
+Ask whether the same skill could run with fewer steps, fewer
+loaded files, fewer concepts, or a smaller output contract without
+losing required behavior.
+
+Paragraphs must be short, direct, and necessary. Sentences must be
+clear, complete, and specific enough to execute.
+
+Fail: bloated paragraph, vague wording, filler, sentence fragment,
+unnecessary explanation, or wording that hides the action the AI
+must take.  
+Severity: Low; Med if unclear prose changes execution.
 
 **S5 — No redundancy / contradiction**  
-Compare against loaded conventions and referenced files.  
-Fail: duplicated rule, stale copy, contradiction, or multiple
-canonical homes for the same workflow rule.  
+Check inside the anchor, across bundled support files, and against
+loaded conventions and referenced files.
+
+Fail: duplicated rule, duplicated workflow step, stale copy,
+contradiction, inconsistent terminology, or multiple canonical
+homes for the same workflow rule.  
 Severity: Med for contradiction or multiple homes; Low for
 duplication.
 

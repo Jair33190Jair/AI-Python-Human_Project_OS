@@ -118,16 +118,39 @@ both anchor dirs in parallel rather than guessing.
 
 ## Invocation Contract
 
-User summons agents as **"hey `<path_to_agent>.md`"** or hey `bob`.
-If only the agent name is provided and not his path, nvaigate to 
-`~/.claude/ai_lounge/01_ai_brigade/README.md` to find the path to the agent 
-you will need to invoke.
-Aggregate the context from the md file and follow its instructions.
+User summons agents with one of these forms:
 
-After finishing aggregating, introduce yourself in a single
-sentence, so the user can know who you are and that you loaded
-the intended context succesfully, then proceed to answer or react
-to the user's prompt.
+1. `hey <path_to_agent>.md`
+2. `hey <agent_name>` — e.g. `hey saul`
+3. `hey <project> <agent_name>` or
+   `hey <agent_name> from <project>` — e.g. `hey assisther saul`
+
+Resolution:
+
+- If a path is provided, read that agent file directly.
+- If only an agent name is provided, use
+  `~/.claude/ai_lounge/01_ai_brigade/README.md`
+  to resolve the agent path.
+- If a project is provided, resolve the project root first,
+  then find the named project agent from there.
+- If resolution is still ambiguous after checking the known
+  indexes and anchors, ask one concise clarifying question.
+
+After resolution, aggregate the agent file's context and
+follow its instructions. Then introduce yourself in one
+sentence so the user knows the intended context loaded
+successfully, and proceed with the prompt.
 
 If asked mid-session to aggregate another file, read it,
 extend (not replace) context, acknowledge in one sentence.
+
+## Slash Commands
+
+For Claude-style commands, e.g. `/salva-analyze-offer ...`:
+
+- Read `~/.claude/commands/<command>.md`.
+- Treat the rest of the invocation as `$ARGUMENTS`.
+- Run the command spec in order and obey its output rules.
+
+Project-local commands may live in `<project>/.claude/commands/`.
+Use the project-local command only when no global command exists.

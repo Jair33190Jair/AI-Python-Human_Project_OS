@@ -33,16 +33,16 @@ ai_tasks_closed.md ← closed tasks
 ```
 project/
   010_vision/            ← always present
-    steve.md             ← project driver agent
+    <project>_steve.md   ← project driver agent
     product_brief.md
     roadmap.md
     decisions.md
   020_architecture/      ← add when Leo has real architecture work
-    leo.md
+    <project>_leo.md
   030_compliance/        ← add when Saul has real compliance work
-    saul.md
+    <project>_saul.md
   # 040_builder/         ← add when Bob is building automation or app
-  #   bob.md
+  #   <project>_bob.md
 ```
 
 Agent files live in their domain folder. The agent IS the entry
@@ -74,3 +74,80 @@ product/
   See `09_numbering.md`.
 - Do not create `050_engine/` or `060_app/` before the
   workflow has been validated with a real user.
+
+## Agent Naming
+
+Global brigade agents:
+
+```text
+ai_lounge/01_ai_brigade/NNN_<domain>/<agent>.md
+```
+
+Project overlays:
+
+```text
+NNN_<domain>/<project>_<agent>.md
+```
+
+Do not include `ai_agent`, `core`, or `project_agent` in file
+names when the folder already gives that context.
+
+## Commands As Buttons
+
+Slash commands are runnable buttons.
+
+Reusable commands live globally:
+
+```text
+~/.claude/commands/<agent>-<verb-object>.md
+```
+
+Project-only commands live in the project:
+
+```text
+<project>/.claude/commands/<project>-<verb-object>.md
+```
+
+Use global first. A project-local command is a fallback when no
+global command with that name exists.
+
+Keep commands thin. A command may contain a simple one-step
+procedure. Once it coordinates multiple commands or human steps,
+move the procedure into a workflow and make the command load it.
+
+Do not put executable slash commands inside agent or domain
+folders.
+
+## Workflow Placement
+
+Workflows are deterministic procedures. They orchestrate commands,
+project files, and human steps.
+
+Reusable workflows live under the global domain:
+
+```text
+ai_lounge/01_ai_brigade/NNN_<domain>/010_workflows/
+```
+
+Project-specific workflows live in the project domain:
+
+```text
+NNN_<domain>/010_workflows/
+```
+
+Workflow files use sparse three-digit prefixes:
+
+```text
+010_offer_intake.md
+020_renewal_check.md
+```
+
+If a workflow should be invoked directly, create a thin command:
+
+```text
+Load workflow: <path>
+Run it with $ARGUMENTS.
+Output exactly what the workflow specifies.
+```
+
+Keep the workflow itself in the domain.
