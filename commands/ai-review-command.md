@@ -18,7 +18,7 @@ Findings only. Do not edit or queue tasks.
 Run preflight first:
 
 ```bash
-python3 ~/.claude/commands/ai-review-skill/preflight.py "$ARGUMENTS"
+python3 ~/.claude/commands/ai-review-command/preflight.py "$ARGUMENTS"
 ```
 
 Use its resolved anchor, support check, context label, and
@@ -59,7 +59,7 @@ paste/write instructions that need human interpretation.
 
 ## Checks
 
-Read `~/.claude/commands/ai-review-skill/rubric.md`
+Read `~/.claude/commands/ai-review-command/rubric.md`
 and run S1–S12 from it.
 Skip checks that pass cleanly.
 
