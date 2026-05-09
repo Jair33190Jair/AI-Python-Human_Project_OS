@@ -1,23 +1,42 @@
 ---
-name: md_editing_context
-description: Shared convention bundle — load before drafting or editing any markdown file.
 owner: kai
+description: Shared convention bundle — load before drafting or editing any markdown file.
 ---
 
 # Markdown Editing Context
 
 Load before drafting or editing any `.md` file.
 
-## Ownership
+## Headers
 
-Every authored markdown file must declare at least one owner
-in frontmatter:
+Every authored markdown file opens with frontmatter:
 
 ```
+---
 owner: <agent-name>
+description: <one-line purpose>
+---
 ```
 
-Multiple owners: `owner: kai, saul`
+`owner` is required. Multiple owners: `owner: kai, saul`
+Omit `description` when the title already says enough.
+
+Deliverables (design docs, decision records, specs, legal
+docs, runbooks) add `version`, `status`, and `reviewer`
+to the same frontmatter:
+
+```
+version: v<MAJOR>.<MINOR>
+status: <draft | approved | deprecated>
+reviewer: <human name(s) or unassigned>
+```
+
+- MINOR bumps on edits within a draft cycle; MAJOR after
+  approval.
+- `status` vocabulary is fixed; don't invent values.
+- `reviewer` is always human. Agents are authors, never
+  reviewers.
+- Always use English attributes; never translate keys.
 
 **When reading:** identify the owner(s). No action required.
 **When modifying a file you don't own:** don't edit it.
@@ -31,28 +50,9 @@ Scope: all `ai_lounge` and project workspace markdown files.
 Not applicable to vendored dependencies, virtualenvs, or
 third-party license files.
 
-## Document Header
-
-Every deliverable (design doc, decision record, spec, legal
-doc, runbook) opens with:
-
-```
-**Version:** v<MAJOR>.<MINOR> — YYYY-MM-DD
-**Status:** <Draft | In Review | Approved | Deprecated>
-**Reviewer:** <human name(s), comma-separated, or "unassigned">
-```
-
-- MINOR bumps on edits within a draft cycle; MAJOR after
-  Approved.
-- Date = last write, not first.
-- Status vocabulary is fixed — don't invent new values.
-- Reviewer is always human. Agents are authors, never
-  reviewers.
-- Always use English attributes — never translate.
-
-Does NOT apply to: `README.md`, `ai_context.md`,
-`friction.md`, conventions, code files, or internal
-scratchpads.
+Deliverable metadata does NOT apply to: `README.md`,
+`ai_context.md`, `friction.md`, conventions, code files,
+or internal scratchpads.
 
 ## Paths
 

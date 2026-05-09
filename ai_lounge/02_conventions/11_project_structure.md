@@ -123,7 +123,16 @@ folders.
 Workflows are deterministic procedures. They orchestrate commands,
 project files, and human steps.
 
-Reusable workflows live under the global domain:
+Product-level workflows for the active workspace live here:
+
+```text
+ai_lounge/020_workflows/
+```
+
+Do not split human and AI workflows into separate folders. Most
+workflows are mixed; label responsibility inside the steps.
+
+Reusable domain workflows live under the global domain:
 
 ```text
 ai_lounge/01_ai_brigade/NNN_<domain>/010_workflows/

@@ -64,7 +64,7 @@ artifact.
 ```markdown
 # Competitive Analysis — <Project Name>
 
-**Date:** YYYY-MM-DD
+**Date:** MM-YY
 **Competitors examined:** N
 **Verdict:** PURSUE | PIVOT | ABANDON
 

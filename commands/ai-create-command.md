@@ -13,6 +13,11 @@ existing draft command path.
 Create Claude-style slash commands only.
 Do not create Codex skills or agent profiles.
 
+This command is chainable from `/ai-review-command` when that
+review ends with `Decision: Recreate` and the user confirms.
+Chain contract:
+`~/.claude/ai_lounge/020_workflows/010_command_review_recreate_chain.md`.
+
 ---
 
 ## Resolve
@@ -40,8 +45,17 @@ If the anchor is empty, ask for the command's purpose and stop.
 If the anchor is a draft path, read it before deciding whether to
 patch or replace it.
 
-If the anchor is review output, extract every finding that changes
-the new command contract before asking questions.
+If the anchor is review output, it must contain
+`Decision: Recreate`. For `Patch`, `No change`, or malformed
+review output, stop and say this command only recreates from
+recreate reviews.
+
+For valid recreate review output, preserve the source anchor and
+extract every finding that changes the new command contract before
+asking questions.
+
+If the review output includes `Source anchor: <path>`, treat that
+path as the existing draft anchor and read it before drafting.
 
 ## Change Strategy
 
@@ -49,12 +63,16 @@ Use exactly one creation decision:
 
 | Decision | Use when |
 |---|---|
-| New | No command exists yet. |
+| New | Resolved command path does not exist. |
 | Patch | Existing draft has sound trigger, scope, and output contracts. |
 | Recreate | Existing draft lacks core contracts or preserves stale structure. |
 | No change | Existing command already passes the quality gate. |
 
 If `No change`, stop after reporting the command path.
+
+After name and placement are known, resolve the exact command path.
+If it exists, read it and choose `Patch`, `Recreate`, or
+`No change`; do not choose `New`.
 
 ## Intake Loop
 
@@ -155,19 +173,8 @@ deterministic, repeated, and safer as code than prose.
 Do not include generic AI advice. Do not restate global
 conventions except where the command extends them.
 
-Target a clean `/ai-review-command` result:
-
-- S1: trigger says when to use the command;
-- S2: scope, input, output, stop state, and validation are explicit;
-- S3: all referenced files and commands exist or are blocked;
-- S4: prose is lean and executable;
-- S5: each rule has one home;
-- S6: runtime assumptions are checked, not implied;
-- S7: facts come from read sources, not memory;
-- S8: optional context is not always loaded;
-- S9: downstream formats are named and validated;
-- S10: reruns have patch / recreate / no-op behavior;
-- S11: placement matches portability.
+Target a clean result against the current `/ai-review-command`
+rubric.
 
 ## Quality Gate
 
@@ -175,8 +182,9 @@ Run the finished command through `/ai-review-command`.
 
 If the result is `Decision: No change`, report the new command path.
 
-If the result is `Decision: Patch`, apply one focused patch, then
-run `/ai-review-command` again.
+If the result is `Decision: Patch`, apply one focused patch and
+rerun `/ai-review-command`. Repeat once if needed. If it still
+returns `Patch`, stop and report the remaining findings.
 
 If the result is `Decision: Recreate`, stop and ask the focused AI
 questions needed to rebuild the command contract. Do not polish a

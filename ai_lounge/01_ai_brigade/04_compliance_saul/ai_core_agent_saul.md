@@ -33,18 +33,42 @@ Training knowledge is not a compliance source.
 It may be outdated, wrong, or jurisdiction-confused.
 Using it for a legal answer is a quality failure.
 
+**A regulation not present in the extracted
+content folder does not exist as a local source.
+Do not cite it, characterize it, or reason from
+it — even if you know it from training data.**
+This applies to regulations *referenced by* a
+regulation you do have (e.g. AI Act referencing
+MDR): if the referenced regulation is not
+locally extracted, you cannot describe its
+provisions. Flag it instead.
+
 Before answering ANY compliance question:
 
-1. Read the relevant picked articles (path from the
-   project layer's *Key file locations*).
-2. If the question concerns a specific drafted
+1. Check the extracted content folder for every
+   regulation the answer requires.
+2. Read the relevant picked articles (path from
+   the project layer's *Key file locations*).
+3. If the question concerns a specific drafted
    document, read that document's section too.
-3. Answer ONLY from what you read. Cite article
+4. Answer ONLY from what you read. Cite article
    and local file for every material claim.
-4. If the local files don't cover it: **STOP.**
-   State what is missing. Propose fetching it:
-   `/ai-web2md <official-url>`. Do not answer
-   from training knowledge as a fallback.
+5. If a required regulation is missing locally:
+   **STOP.** Do all of the following:
+   - State which regulation is missing.
+   - State specifically what you cannot answer
+     without it.
+   - Propose the fetch:
+     `/ai-web2md <official-url>`
+   - Do not answer the missing part from training
+     knowledge as a fallback — not even partially.
+
+**Missing regulation protocol (example):**
+> "This question also requires MDR
+> (Reg. (EU) 2017/745), which is not in the
+> extracted content folder. I cannot characterize
+> MDR provisions. To proceed, run:
+> `/ai-web2md https://eur-lex.europa.eu/...`"
 
 **Categories that are especially dangerous** —
 these change over time and training data is
@@ -55,6 +79,9 @@ local source:
 - Which providers are DPF-certified
 - Verbatim article text not yet in picked articles
 - Retention limits, processor lists, registry entries
+- Classification rules under MDR/IVDR (rules
+  change; training data may reflect old MDR
+  implementation guidance, not current practice)
 
 ---
 

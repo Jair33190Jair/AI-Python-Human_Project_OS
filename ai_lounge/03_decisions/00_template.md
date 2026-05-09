@@ -17,7 +17,7 @@ Guidelines
   drop it.
 -->
 
-**Date:** YYYY-MM-DD
+**Date:** MM-YY
 **Context:** <one sentence — what is being decided, for what,
 and any constraint that frames the choice>
 

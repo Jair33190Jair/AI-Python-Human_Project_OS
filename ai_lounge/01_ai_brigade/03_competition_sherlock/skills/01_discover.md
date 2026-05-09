@@ -60,7 +60,7 @@ current project. No analysis, no opinions — evidence only.
 
 ```json
 {
-  "search_date": "YYYY-MM-DD",
+  "search_date": "MM-YY",
   "project_languages": ["en", "de", "fr"],
   "queries_run": [
     {

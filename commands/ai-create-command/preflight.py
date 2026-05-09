@@ -16,6 +16,7 @@ CODE_SPAN = re.compile(r"`([^`\n]+)`")
 MARKDOWN_LINK = re.compile(r"\[[^\]]+\]\(([^)\s]+)\)")
 PATH_TOKEN = re.compile(r"(?<![\w.-])(?:~/?|[A-Za-z0-9_./-]+/)[A-Za-z0-9_./~-]+")
 STALE_TEXT = re.compile(r"TODO|FIXME|old project|old product|copy of", re.IGNORECASE)
+SOURCE_ANCHOR = re.compile(r"^Source anchor:\s*(.+)$", re.MULTILINE)
 
 
 def resolve_path(raw: str, base: Path = ROOT) -> Path:
@@ -54,8 +55,17 @@ def classify_anchor(raw: str) -> tuple[str, Path | None, str | None]:
     if looks_like_missing_path(raw):
         return "Missing", None, f"draft path not found: {raw}"
 
-    if "Decision: Recreate" in raw or "| Check | Finding | Severity |" in raw:
+    if "Decision: Recreate" in raw:
+        match = SOURCE_ANCHOR.search(raw)
+        if match:
+            source = resolve_path(match.group(1))
+            if source.is_file() and source.suffix == ".md":
+                return "Review", source, None
+            return "Missing", None, f"source anchor not found: {match.group(1)}"
         return "Review", None, None
+
+    if "| Check | Finding | Severity |" in raw or "Decision:" in raw:
+        return "Missing", None, "review anchor must contain Decision: Recreate"
 
     return "Intent", None, None
 

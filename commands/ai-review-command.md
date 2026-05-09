@@ -11,15 +11,25 @@ Anchor: `$ARGUMENTS` — a skill or slash command file or folder.
 
 Findings only. Do not edit or queue tasks.
 
+If the decision is `Recreate`, ask whether to run
+`/ai-create-command` with the complete review output.
+Load workflow:
+`~/.claude/ai_lounge/020_workflows/010_command_review_recreate_chain.md`.
+
 ---
 
 ## Resolve
 
+If `--with-scripts` appears anywhere in `$ARGUMENTS`, note the
+flag and strip it before processing the anchor path.
+
 Run preflight first:
 
 ```bash
-python3 ~/.claude/commands/ai-review-command/preflight.py "$ARGUMENTS"
+python3 ~/.claude/commands/ai-review-command/preflight.py "$ANCHOR"
 ```
+
+where `$ANCHOR` is `$ARGUMENTS` with `--with-scripts` removed.
 
 Use its resolved anchor, support check, context label, and
 stale-scan output.
@@ -86,6 +96,7 @@ structure instead of fixing the asset.
 
 If the decision is `Recreate`, say whether the next step is
 answering focused AI questions or drafting from existing sources.
+This sentence must be inside the decision line.
 
 Decision schema:
 
@@ -105,16 +116,50 @@ Use these schemas:
 Context load: `<Light | Moderate | Heavy>` — <N files loaded, chain depth N>
 Instruction clarity: `<Clear | Mixed | Unclear>` — <1-line reason>
 
+## Script Review
+
+Run only if `--with-scripts` was set.
+
+After emitting the command review output, find `.py` files
+associated with the anchor:
+
+1. If the anchor is `foo.md`, look for a sibling folder named
+   `foo/` and collect all `.py` files in it (non-recursive).
+2. Also include any `.py` paths referenced inside the anchor
+   text that exist on disk.
+
+For each `.py` file found, spawn `/bob-review-script` as a
+subagent. Pass the file's absolute path as `$ARGUMENTS` and
+include this context in the subagent briefing:
+
+- the script's role in the command workflow (from `## Collect`)
+- the inputs, outputs, and validation checks the script must
+  implement per the command's contract
+- any downstream fields the script's output must satisfy
+
+Bob should flag gaps between the script's actual behavior and
+the command contract as additional findings, beyond standard
+R1–R7 criteria.
+
+Append findings under a `## Script Review` heading, one
+subsection per file. If no `.py` files are found, note:
+
+```text
+Script Review: no .py files found for this anchor.
+```
+
 ## Final Validation
 
 Before emitting, verify: table schema, exact decision label,
-conditional S12, rubric metrics, and preflight coverage.
+conditional S12, rubric metrics, preflight coverage, handoff
+prompt when required, and workflow contract compliance.
 
 If validation fails, fix the output before responding.
 
 Hard rules:
 
-- No prose between output sections or after the metrics.
+- No prose between output sections.
+- No prose after the metrics except the recreate handoff prompt.
 - Do not edit files.
 - Do not queue tasks.
 - Flag stale duplicate support files that only restate the anchor.

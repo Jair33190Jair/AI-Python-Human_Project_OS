@@ -116,12 +116,12 @@ Welche konkreten Resultate sollen im Projekt entstehen (z. B. Pilot, Prototyp, T
 
 Geplanter Projektstart
 *
-dd/mm/yyyy
-Date format: dd/mm/yyyy
+MM/YY
+Date format: MM/YY
 Geplantes Projektende
 *
-dd/mm/yyyy
-Date format: dd/mm/yyyy
+MM/YY
+Date format: MM/YY
 Gesamtprojektkosten
 *
 Format: CHF

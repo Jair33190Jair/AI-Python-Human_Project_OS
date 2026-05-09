@@ -66,6 +66,19 @@ report failures before proceeding.
   with the article ref and official pointer.
 - No blank numbered or lettered items.
 
+## Form / survey content
+
+When the page is a form or survey, format every field
+so it is visibly fillable in markdown:
+
+- **Text / number input** → append answer placeholder
+  on same line: `**Question text**: ___`
+- **Checkbox / multi-select** → `- [ ] option`
+- **Radio / single-select (Ja/Nein, pick-one)**
+  → each option on its own line: `- ( ) option`
+- Preserve section headers and question numbering.
+- Mark required fields with `*(Pflicht)*`.
+
 ---
 
 ## Output

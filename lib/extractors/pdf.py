@@ -26,10 +26,22 @@ def _run(cmd: list[str]) -> str:
     return proc.stdout
 
 
-def _extract_with_pdftotext(path: Path) -> str:
+def _extract_with_pdftotext(path: Path, mode: str = "raw") -> str:
     if not shutil.which("pdftotext"):
         return ""
-    return _run(["pdftotext", "-layout", str(path), "-"])
+    flag = "-layout" if mode == "layout" else "-raw"
+    return _run(["pdftotext", flag, str(path), "-"])
+
+
+def _looks_like_layout_columns(text: str) -> bool:
+    """Detect lines where pdftotext joined separate columns."""
+    lines = [line.rstrip() for line in text.splitlines()]
+    long_gaps = [
+        line for line in lines
+        if re.search(r"\S\s{8,}\S", line)
+    ]
+    content_lines = [line for line in lines if line.strip()]
+    return bool(content_lines) and len(long_gaps) / len(content_lines) > 0.12
 
 
 def _extract_with_ocr(path: Path) -> str:
@@ -77,6 +89,7 @@ def _ocr_lang() -> str:
 def _clean_text(text: str) -> str:
     text = text.replace("\r\n", "\n").replace("\r", "\n")
     text = re.sub(r"[ \t]+", " ", text)
+    text = re.sub(r"(\w)-\n(\w)", r"\1\2", text)
     text = re.sub(r"\n{3,}", "\n\n", text)
     return text.strip()
 
@@ -287,7 +300,13 @@ def extract(content: bytes, source_url: str = "") -> str:
         tmp_path = Path(f.name)
 
     try:
-        raw = _extract_with_pdftotext(tmp_path)
+        raw = _extract_with_pdftotext(tmp_path, mode="raw")
+        if len(_clean_text(raw)) < MIN_TEXT_CHARS:
+            raw = _extract_with_pdftotext(tmp_path, mode="layout")
+        elif _looks_like_layout_columns(raw):
+            layout = _extract_with_pdftotext(tmp_path, mode="layout")
+            if not _looks_like_layout_columns(layout):
+                raw = layout
         if len(_clean_text(raw)) < MIN_TEXT_CHARS:
             raw = _extract_with_ocr(tmp_path)
     finally:

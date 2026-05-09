@@ -75,7 +75,7 @@ genuinely unavailable, record `"unknown"` — never invent.
 {
   "slug": "kebab-case-id",
   "name": "",
-  "collected_on": "YYYY-MM-DD",
+  "collected_on": "MM-YY",
   "reviews": {
     "g2":        { "rating": null, "count": null, "url": "" },
     "capterra":  { "rating": null, "count": null, "url": "" },

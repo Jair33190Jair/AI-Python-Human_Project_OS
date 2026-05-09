@@ -85,8 +85,8 @@ owner: steve
 
 | Feld | Wert |
 |---|---|
-| Geplanter Projektstart (dd/mm/yyyy) * | |
-| Geplantes Projektende (dd/mm/yyyy) * | |
+| Geplanter Projektstart (MM/YY) * | |
+| Geplantes Projektende (MM/YY) * | |
 
 ---
 
