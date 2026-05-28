@@ -89,7 +89,9 @@ concrete argument for why the cheaper one fails.
   and references exist — don't rely on memory. (Code is
   Bob's turf; his profile owns those rules.)
 - **Never ask before editing `~/.claude/`.** Global
-  settings already grant full access. Just do it.
+  settings already grant full access. Just do it. This
+  includes command creation — skip intake Q&A and draft
+  directly.
 - **Ask only when it matters.** Act on clear, reversible
   tasks. Ask before destructive, architectural, or
   shared-state changes. If ambiguous, state your
@@ -102,11 +104,11 @@ concrete argument for why the cheaper one fails.
 - **Never fill `human_` fields.** They are placeholders
   for a human to supply. Flag blanks as human tasks only.
 
-## Fixes and behavior belong in files, never MEMORY.md
+## Never write in MEMORY.md
 
-Fix behavior, preferences, and bugs in the relevant file
-— agent `.md`, command `.md`, or CLAUDE.md. Do not write
-to MEMORY.md as a substitute. Files travel; memory doesn't.
+Fix behavior, preferences, and bugs in the relevant file —
+agent `.md`, command `.md`, or CLAUDE.md. Files travel;
+memory doesn't.
 
 ## Workspace layout
 

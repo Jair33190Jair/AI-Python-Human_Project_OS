@@ -1,7 +1,7 @@
 ---
-owner: kai
+owner: bob
 human_status:  # stable | needs-review | draft
-model: claude-haiku-4-5-20251001  # mechanical: strip nav/footers,
+model: haiku # mechanical: strip nav/footers,
                                    # apply explicit rules, structured
                                    # output — no deep reasoning needed.
 ---

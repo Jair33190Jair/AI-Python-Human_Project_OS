@@ -180,6 +180,53 @@ _FORM_COUNT_JS = """() => {
 }"""
 
 
+def _strip_nav(text: str) -> str:
+    """Drop nav/footer cruft before first H1 and after trailing link-only lines."""
+    import re
+    lines = text.splitlines()
+
+    # Find first real H1 (content, not inline nav)
+    start = 0
+    for i, line in enumerate(lines):
+        if line.startswith("# "):
+            start = i
+            break
+
+    # Find where trailing nav begins: 4+ consecutive lines that are only links or empty
+    link_re = re.compile(r"^\s*(\[.*?\]\(.*?\)|)\s*$")
+    end = len(lines)
+    run = 0
+    for i in range(len(lines) - 1, start - 1, -1):
+        if link_re.match(lines[i]):
+            run += 1
+        else:
+            if run >= 4:
+                end = i + 1
+            run = 0
+
+    return "\n".join(lines[start:end]).strip()
+
+
+def _fetch_requests_html2text(url: str) -> str:
+    import html2text
+    resp = requests.get(
+        url,
+        timeout=20,
+        allow_redirects=True,
+        headers={"User-Agent": "Mozilla/5.0"},
+    )
+    resp.raise_for_status()
+    ct = resp.headers.get("Content-Type", "")
+    if "html" not in ct.lower():
+        raise ValueError(f"not HTML: {ct}")
+    h = html2text.HTML2Text()
+    h.ignore_links = False
+    h.ignore_images = True
+    h.body_width = 0
+    h.unicode_snob = True
+    return _strip_nav(h.handle(resp.text))
+
+
 def _fetch_playwright(url: str) -> tuple[str, str]:
     import asyncio
     from playwright.async_api import async_playwright
@@ -298,7 +345,18 @@ def main() -> None:
             sys.exit(1)
         return
 
-    # Playwright — free headless browser fallback
+    # requests + html2text — fast, free, no browser needed
+    try:
+        text = _fetch_requests_html2text(url)
+        print("html2text", file=sys.stderr)
+        if text and len(text.split()) >= 50:
+            print(_with_metadata(text, url, "html2text"))
+            return
+        print("html2text: too little content, trying next", file=sys.stderr)
+    except Exception as e:
+        print(f"html2text error: {e}, trying next", file=sys.stderr)
+
+    # Playwright — headless browser fallback for JS-heavy pages
     try:
         import playwright  # noqa: F401
         text, method = _fetch_playwright(url)

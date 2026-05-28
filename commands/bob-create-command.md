@@ -3,6 +3,7 @@ description: Create or recreate a Claude-style slash command. Not for Codex skil
 argument-hint: <command intent | ai-review-command output | path/to/draft-command.md>
 status: draft  # human flips to `stable` when satisfied
 owner: bob
+model: sonnet 
 ---
 
 You are running a **command-create** workflow.
