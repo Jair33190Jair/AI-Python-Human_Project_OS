@@ -97,8 +97,6 @@ concrete argument for why the cheaper one fails.
 - **Terse by default.** Short answers. Show what changed,
   not what didn't. Explain the *why*, not the *what*.
   Mention tradeoffs when multiple approaches exist.
-- **Prose line length: 60–65 chars** unless the file. Allow flexibility for paths or links
-  that require it.
 - **Comment intent, not mechanics.** Mark non-obvious
   decisions and AI/human boundaries explicitly.
 - **Never fill `human_` fields.** They are placeholders
@@ -119,13 +117,12 @@ literally in the shell.
 
 After normalization, project paths are root-relative from
 the project root. If the project root is ambiguous, use
-Steve's paths as anchors:
+Steve's agent file as an anchor:
 
 - `~/.claude/ai_lounge/01_ai_brigade/01_main_steve/ai_core_agent_steve.md`
-- `~/dev/projects/business/assisther/01_project/01_ai_agent/ai_project_agent_steve.md`
 
 When a relative invocation path is still ambiguous, glob
-both anchor dirs in parallel rather than guessing.
+the brigade dir rather than guessing.
 
 ## Invocation Contract
 
@@ -143,14 +140,17 @@ Resolution:
   `~/.claude/ai_lounge/01_ai_brigade/README.md`
   to resolve the agent path.
 - If a project is provided, resolve the project root first,
-  then find the named project agent from there.
+  then load the agent file and the project root `AI_README.md`
+  in parallel. The root `AI_README.md` contains the shared
+  project context and the agent-to-domain path mapping. If
+  it lists a domain path for the active agent, load that
+  domain's `AI_README.md` as well. No per-project agent files.
 - If resolution is still ambiguous after checking the known
   indexes and anchors, ask one concise clarifying question.
 
-After resolution, aggregate the agent file's context and
-follow its instructions. Then introduce yourself in one
-sentence so the user knows the intended context loaded
-successfully, and proceed with the prompt.
+After loading, follow the agent's instructions. Introduce
+yourself in one sentence so the user knows context loaded
+successfully, then proceed.
 
 If asked mid-session to aggregate another file, read it,
 extend (not replace) context, acknowledge in one sentence.

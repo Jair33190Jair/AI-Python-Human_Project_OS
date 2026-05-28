@@ -182,24 +182,91 @@ Then render CSV as a markdown table.
 ## Output
 
 Always write the markdown to a file **next to the source**
-(same directory, same base name, `.md` extension) before
-printing anything to chat.
+(same directory, same base name, `.md` extension) using a
+script — never by having the LLM reconstruct the content.
 
-Prepend a YAML frontmatter block before the content:
+```bash
+OUTFILE="${FILE%.*}.md"
+TITLE=$(basename "$FILE" | sed 's/\.[^.]*$//')
+MONTH_YY=$(date +%m-%y)
 
-```yaml
+{
+cat <<FRONT
 ---
-title: "<first heading or filename>"
-source_url: "file://<absolute_path>"
-retrieved_at: MM-YY
+title: "$TITLE"
+source_url: "file://$FILE"
+retrieved_at: $MONTH_YY
 extraction_method: <tier-N | needs_ocr>
 warnings:
 extraction_status: success
 ---
+FRONT
+# Fix soft-hyphen line breaks (e.g. "stipu-\nlante" → "stipulante")
+<extraction_command> | perl -0pe 's/(\w)-\n(\w)/$1$2/g'
+} > "$OUTFILE"
 ```
 
-Set `extraction_status: needs_ocr` when the file is
-scanned and OCR tooling is missing.
+Replace `<extraction_command>` with the winning tier command.
+Set `extraction_status: needs_ocr` when the file is scanned
+and OCR tooling is missing.
+
+**PDF only — structure formatting (run after writing)**
+
+Applies heading markup, bullet normalisation, and blank-line
+spacing. Skip if pandoc already emitted valid markdown (Tier 3).
+
+```python
+import re
+
+src = "<OUTFILE>"
+lines = open(src).readlines()
+out = []
+fm_count = 0
+frontmatter_done = False
+
+def heading(s):
+    if re.match(r'^[A-Z] [A-ZÀÈÉÌÍÒÓÙÚ]', s):  return '## '
+    if re.match(r'^\d+\.\d+\.\d+ ', s):          return '#### '
+    if re.match(r'^\d+\.\d+ ', s):               return '#### '
+    if re.match(r'^\d+ [A-ZÀÈÉÌÍÒÓÙÚ]', s):      return '### '
+    if re.match(r'^\d{4} ', s):                   return '### '  # e.g. "0850 Cyber..."
+    return None
+
+for line in lines:
+    s = line.rstrip('\n')
+    if s == '---':
+        fm_count += 1
+        out.append(s)
+        if fm_count == 2:
+            frontmatter_done = True
+            out.append('')
+        continue
+    if not frontmatter_done:
+        out.append(s)
+        continue
+
+    s = s.replace('§ ', '- ')
+    pfx = heading(s)
+    if pfx:
+        if out and out[-1] != '':
+            out.append('')
+        out.append(pfx + s)
+        out.append('')
+    else:
+        out.append(s)
+
+# collapse runs of 2+ blank lines to 1
+result, blanks = [], 0
+for l in out:
+    if l == '':
+        blanks += 1
+        if blanks == 1: result.append(l)
+    else:
+        blanks = 0
+        result.append(l)
+
+open(src, 'w').write('\n'.join(result) + '\n')
+```
 
 Chat summary after writing:
 

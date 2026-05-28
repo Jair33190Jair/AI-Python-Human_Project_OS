@@ -28,9 +28,187 @@ Newest on top. Done/obsolete → `ai_tasks_closed.md`.
 Task IDs are append-only sparse. Increment `task_count`
 for each new task. Never renumber.
 
-`task_count = 6`
+`task_count = 8`
 
 ---
+
+## TASK-0008 — Create `/ai-fix-references` command + `fix.sh` script
+- Date: 05-26
+- Requested by: user (via kai + /ai-create-command)
+- Target agent: bob
+- What: Build a global slash command that renames a file/dir and repairs all references
+  to the old name across a git repo. When called without rename args, infers renames
+  from `git diff --name-status HEAD` and staged changes.
+- Status: open
+- Tag: tooling
+- Depends on: —
+
+### Deliverables
+
+**`~/.claude/commands/ai-fix-references.md`**
+
+```markdown
+---
+description: Rename a file/dir and repair all text references in a git repo. Infers renames from git when no args given.
+argument-hint: "[repo_root] [old_path new_path]"
+status: draft
+owner: kai
+---
+
+Rename a file or directory in a git repo and fix every reference to the old
+name across all tracked text files.
+
+## Arguments
+
+| Arg | Required | Description |
+|---|---|---|
+| `repo_root` | no | Repo root path. Defaults to `$PWD`. |
+| `old_path` | no* | Old file or directory path (relative to repo root). |
+| `new_path` | no* | New file or directory path (relative to repo root). |
+
+\*Omit both to infer rename pairs from `git diff HEAD` + staged changes.
+
+## Resolve
+
+Confirm `repo_root` is a git repository:
+
+```bash
+git -C "${ARGUMENTS[0]:-$PWD}" rev-parse --show-toplevel
+```
+
+Stop with `Blocked: <path> is not a git repo.` if it fails.
+
+## Execute
+
+With explicit args:
+
+```bash
+bash ~/.claude/commands/ai-fix-references/fix.sh "$REPO_ROOT" "$OLD_PATH" "$NEW_PATH"
+```
+
+With no rename args (infer from git):
+
+```bash
+bash ~/.claude/commands/ai-fix-references/fix.sh "$REPO_ROOT"
+```
+
+## Output
+
+Print the script's stdout verbatim. No additional commentary.
+
+## Hard Rules
+
+- Never operate outside the resolved repo root.
+- Skip binary files.
+- Do not auto-commit.
+- If no renames detected and no args given, stop and say so.
+```
+
+---
+
+**`~/.claude/commands/ai-fix-references/fix.sh`**
+
+```bash
+#!/usr/bin/env bash
+# Rename a file/dir and repair all text references in a git repo.
+# Usage: fix.sh <repo_root> [<old_path> <new_path>]
+set -euo pipefail
+
+REPO="${1:-.}"
+shift || true
+cd "$REPO"
+
+OLD_PATHS=()
+NEW_PATHS=()
+
+if [[ $# -ge 2 ]]; then
+  OLD_PATHS+=("$1")
+  NEW_PATHS+=("$2")
+else
+  while IFS=$'\t' read -r old new; do
+    OLD_PATHS+=("$old")
+    NEW_PATHS+=("$new")
+  done < <(
+    { git diff --name-status HEAD 2>/dev/null
+      git diff --name-status --cached 2>/dev/null; } \
+    | awk -F'\t' '$1 ~ /^R/ { print $2"\t"$3 }' \
+    | sort -u
+  )
+fi
+
+[[ ${#OLD_PATHS[@]} -gt 0 ]] || { echo "No renames to process."; exit 0; }
+
+FILES_RENAMED=0
+FILES_UPDATED=0
+
+for i in "${!OLD_PATHS[@]}"; do
+  OLD="${OLD_PATHS[$i]}"
+  NEW="${NEW_PATHS[$i]}"
+  OLD_BASE="$(basename "$OLD")"
+  NEW_BASE="$(basename "$NEW")"
+
+  printf '\n[rename] %s  →  %s\n' "$OLD" "$NEW"
+
+  if [[ -e "$OLD" ]]; then
+    mkdir -p "$(dirname "$NEW")"
+    git mv -- "$OLD" "$NEW" 2>/dev/null || mv -- "$OLD" "$NEW"
+    (( FILES_RENAMED++ )) || true
+  fi
+
+  while IFS= read -r f; do
+    [[ -f "$f" && -r "$f" ]] || continue
+    grep -qI '' "$f" 2>/dev/null || continue  # skip binary
+
+    BEFORE="$(md5sum "$f")"
+    [[ "$OLD" != "$OLD_BASE" ]] && sed -i "s|${OLD}|${NEW}|g" "$f"
+    sed -i "s|${OLD_BASE}|${NEW_BASE}|g" "$f"
+    AFTER="$(md5sum "$f")"
+
+    [[ "$BEFORE" != "$AFTER" ]] && {
+      printf '  refs: %s\n' "$f"
+      (( FILES_UPDATED++ )) || true
+    }
+  done < <(git ls-files)
+done
+
+printf '\nDone: %d file(s) renamed, %d file(s) updated.\n' "$FILES_RENAMED" "$FILES_UPDATED"
+```
+
+### Notes for Bob
+
+- Make `fix.sh` executable (`chmod +x`).
+- Run `/ai-review-command` on the finished command markdown before marking done.
+- Related: TASK-0006 (`/ai-restructure`) covers the AI-driven JSON-plan variant;
+  this command is the simpler explicit-rename path. No overlap in deliverables.
+
+---
+
+## TASK-0007 — Refine `/ai-review-command` to converge in one pass
+- Date: 2026-05-09
+- Requested by: user
+- Target agent: kai
+- What: Stop the review-patch oscillation cycle. Files:
+  `~/.claude/commands/ai-review-command.md`,
+  `~/.claude/commands/ai-review-command/rubric.md`,
+  `~/.claude/commands/ai-review-command/preflight.py`. Changes:
+  (1) **Risk-only Low bar** — flag Low only when not fixing it
+  carries real risk (broken contract, ambiguous output, drift); strip
+  cosmetic flagging from rubric S4/S5/S10/S11. (2) **Mandatory
+  script-deep-read** — `## Collect` must read every `.py` referenced
+  by or sibling to the anchor before judging S3, so buried contracts
+  surface in the first pass. (3) **Convergence decision** — tighten
+  "No change" to fire when zero High/Med and only risk-bearing Lows
+  remain, instead of listing nits. (4) **Carry-forward context**
+  (optional) — accept a `last-review:` frontmatter field or sibling
+  file so the same finding is not relitigated. (5) **Preflight deep
+  ref scan** — extend `preflight.py` to walk referenced scripts and
+  conventions one hop deep and flag contracts that look unmentioned
+  in the anchor body. Acceptance: re-running `/ai-review-command` on
+  a freshly rewritten target three times yields "No change" each
+  time. Plan: `~/.claude/plans/this-is-so-frustrating-jaunty-avalanche.md`.
+- Status: open
+- Tag: tooling, reviewer
+- Depends on: —
 
 ## TASK-0006 — Convention-migration skill (file rename + restructure)
 - Date: 2026-05-09

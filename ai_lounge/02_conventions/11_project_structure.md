@@ -11,7 +11,7 @@ Every new AI project follows a two-layer structure.
 ## Two Layers
 
 **Project layer** (`project/`) — creator-facing. Used to build and
-manage the product. Agent files, architecture, compliance, decisions.
+manage the product. Architecture, compliance, decisions.
 
 **Product layer** (`product/`) — user-facing. What the end user
 touches. Roles, workflows, templates, customer data, engine, app.
@@ -22,31 +22,52 @@ Always present at the project root:
 
 ```
 CLAUDE.md          ← auto-loaded by Claude Code on launch
-ai_context.md      ← human entry point — load this first
+AI_README.md       ← shared project context + agent domain path mapping
 ai_tasks_open.md   ← open tasks for all agents
 ai_tasks_closed.md ← closed tasks
 .claude/commands/  ← slash commands (auto-discovered by Claude Code)
 ```
+
+## Agent Context Model
+
+Brigade agents are generic and reusable. No per-project agent files.
+
+When an agent is invoked on a project, Kai loads in parallel:
+1. The agent's brigade file
+2. The project root `AI_README.md` — shared context for all agents
+3. The agent's domain `AI_README.md` if listed in the root `AI_README.md`
+
+The root `AI_README.md` must include an **agent domain paths table**:
+
+```markdown
+| Agent | Domain path |
+|-------|-------------|
+| Steve | `01_project/AI_README.md` |
+| Leo   | `02_architecture/AI_README.md` |
+| Saul  | `03_compliance/AI_README.md` |
+```
+
+Omit an agent from the table if they have no domain-specific context
+in this project.
 
 ## Project Layer
 
 ```
 project/
   010_vision/            ← always present
-    <project>_steve.md   ← project driver agent
+    AI_README.md         ← Steve's domain context
     product_brief.md
     roadmap.md
     decisions.md
   020_architecture/      ← add when Leo has real architecture work
-    <project>_leo.md
+    AI_README.md         ← Leo's domain context
   030_compliance/        ← add when Saul has real compliance work
-    <project>_saul.md
+    AI_README.md         ← Saul's domain context
   # 040_builder/         ← add when Bob is building automation or app
-  #   <project>_bob.md
 ```
 
-Agent files live in their domain folder. The agent IS the entry
-point to that domain — do not create a separate agents folder.
+Domain `AI_README.md` files are created only when the agent has
+real domain-specific context to add beyond the root `AI_README.md`.
 
 ## Product Layer
 
@@ -77,20 +98,17 @@ product/
 
 ## Agent Naming
 
-Global brigade agents:
+Brigade agents:
 
 ```text
-ai_lounge/01_ai_brigade/NNN_<domain>/<agent>.md
-```
-
-Project overlays:
-
-```text
-NNN_<domain>/<project>_<agent>.md
+~/.claude/ai_lounge/01_ai_brigade/NNN_<domain>/<agent>.md
 ```
 
 Do not include `ai_agent`, `core`, or `project_agent` in file
 names when the folder already gives that context.
+
+Project context lives in `AI_README.md` files, not in
+per-agent files. Never create `<project>_<agent>.md`.
 
 ## Commands As Buttons
 
@@ -117,46 +135,3 @@ move the procedure into a workflow and make the command load it.
 
 Do not put executable slash commands inside agent or domain
 folders.
-
-## Workflow Placement
-
-Workflows are deterministic procedures. They orchestrate commands,
-project files, and human steps.
-
-Product-level workflows for the active workspace live here:
-
-```text
-ai_lounge/020_workflows/
-```
-
-Do not split human and AI workflows into separate folders. Most
-workflows are mixed; label responsibility inside the steps.
-
-Reusable domain workflows live under the global domain:
-
-```text
-ai_lounge/01_ai_brigade/NNN_<domain>/010_workflows/
-```
-
-Project-specific workflows live in the project domain:
-
-```text
-NNN_<domain>/010_workflows/
-```
-
-Workflow files use sparse three-digit prefixes:
-
-```text
-010_offer_intake.md
-020_renewal_check.md
-```
-
-If a workflow should be invoked directly, create a thin command:
-
-```text
-Load workflow: <path>
-Run it with $ARGUMENTS.
-Output exactly what the workflow specifies.
-```
-
-Keep the workflow itself in the domain.

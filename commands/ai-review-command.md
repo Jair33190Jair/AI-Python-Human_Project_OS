@@ -2,7 +2,7 @@
 description: Review a skill or slash command for instruction quality and scriptability. Not for agent profiles or drafting prompts. Findings only — no auto-fix.
 argument-hint: <path/to/SKILL.md|path/to/command.md|path/to/skill-folder>
 status: refining  # human flips to `stable` when satisfied
-owner: kai
+owner: leo
 ---
 
 You are running a **skill-review** audit.
@@ -13,8 +13,6 @@ Findings only. Do not edit or queue tasks.
 
 If the decision is `Recreate`, ask whether to run
 `/ai-create-command` with the complete review output.
-Load workflow:
-`~/.claude/ai_lounge/020_workflows/010_command_review_recreate_chain.md`.
 
 ---
 
@@ -78,6 +76,13 @@ Record:
 - S1–S11: `check | finding | severity | location | suggested fix`
 - S12: `step | effort | frequency | impact | verdict`
 
+**Suggested fix must be diff-precise**: exact text to add,
+remove, or replace — not a direction. If the fix cannot be
+stated at that level, the finding is not ready to emit.
+
+**Sort S1–S11 rows**: High severity first, then Med, then
+Low. Within a severity, order by check number.
+
 ## Output
 
 Print, in order: S1–S11 table; one decision line; S12 table
@@ -118,35 +123,8 @@ Instruction clarity: `<Clear | Mixed | Unclear>` — <1-line reason>
 
 ## Script Review
 
-Run only if `--with-scripts` was set.
-
-After emitting the command review output, find `.py` files
-associated with the anchor:
-
-1. If the anchor is `foo.md`, look for a sibling folder named
-   `foo/` and collect all `.py` files in it (non-recursive).
-2. Also include any `.py` paths referenced inside the anchor
-   text that exist on disk.
-
-For each `.py` file found, spawn `/bob-review-script` as a
-subagent. Pass the file's absolute path as `$ARGUMENTS` and
-include this context in the subagent briefing:
-
-- the script's role in the command workflow (from `## Collect`)
-- the inputs, outputs, and validation checks the script must
-  implement per the command's contract
-- any downstream fields the script's output must satisfy
-
-Bob should flag gaps between the script's actual behavior and
-the command contract as additional findings, beyond standard
-R1–R7 criteria.
-
-Append findings under a `## Script Review` heading, one
-subsection per file. If no `.py` files are found, note:
-
-```text
-Script Review: no .py files found for this anchor.
-```
+If `--with-scripts` was set, load and execute
+`~/.claude/commands/ai-review-command/script-review.md`.
 
 ## Final Validation
 

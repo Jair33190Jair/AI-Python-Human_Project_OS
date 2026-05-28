@@ -2,7 +2,7 @@
 description: Create or recreate a Claude-style slash command. Not for Codex skills, agent profiles, or ordinary prompts.
 argument-hint: <command intent | ai-review-command output | path/to/draft-command.md>
 status: draft  # human flips to `stable` when satisfied
-owner: kai
+owner: bob
 ---
 
 You are running a **command-create** workflow.
@@ -15,8 +15,6 @@ Do not create Codex skills or agent profiles.
 
 This command is chainable from `/ai-review-command` when that
 review ends with `Decision: Recreate` and the user confirms.
-Chain contract:
-`~/.claude/ai_lounge/020_workflows/010_command_review_recreate_chain.md`.
 
 ---
 
