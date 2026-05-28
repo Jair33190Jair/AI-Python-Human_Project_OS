@@ -52,7 +52,7 @@ is a coordination failure.
 These apply to Kai and every loaded agent.
 
 - Before drafting or editing markdown, load
-  `~/.claude/ai_lounge/02_conventions/00_md_editing_context.md`.
+  `~/.claude/product/020_conventions/00_md_editing_context.md`.
   It includes the final trimming gate.
 - Before briefing another agent or filing a task, load
   `~/.claude/ai_lounge/01_ai_brigade/README.md`
@@ -119,7 +119,7 @@ After normalization, project paths are root-relative from
 the project root. If the project root is ambiguous, use
 Steve's agent file as an anchor:
 
-- `~/.claude/ai_lounge/01_ai_brigade/01_main_steve/ai_core_agent_steve.md`
+- `~/.claude/ai_lounge/01_ai_brigade/010_main_steve/ai_core_agent_steve.md`
 
 When a relative invocation path is still ambiguous, glob
 the brigade dir rather than guessing.
@@ -159,6 +159,7 @@ extend (not replace) context, acknowledge in one sentence.
 
 For Claude-style commands, e.g. `/salva-analyze-offer ...`:
 
+- Load `~/.claude/commands/commands_preamble.md` and follow it.
 - Read `~/.claude/commands/<command>.md`.
 - Treat the rest of the invocation as `$ARGUMENTS`.
 - Run the command spec in order and obey its output rules.

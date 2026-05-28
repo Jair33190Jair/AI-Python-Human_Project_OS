@@ -19,7 +19,7 @@ Do not crawl the full project tree.
 
 Read these conventions so your checks are grounded:
 
-- `~/.claude/ai_lounge/02_conventions/00_md_editing_context.md`
+- `~/.claude/product/020_conventions/00_md_editing_context.md`
 
 Then read the anchor file in full.
 

@@ -32,8 +32,8 @@ Confirm `README_AI.md` exists there or stop with Blocked.
 ### 2. Load conventions
 
 Read in parallel — stop with Blocked if either is missing:
-- `~/.claude/ai_lounge/02_conventions/11_project_structure.md`
-- `~/.claude/ai_lounge/02_conventions/00_md_editing_context.md`
+- `~/.claude/product/020_conventions/11_project_structure.md`
+- `~/.claude/product/020_conventions/00_md_editing_context.md`
 
 ### 3. Map the project
 
