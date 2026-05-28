@@ -6,5 +6,5 @@ Run this before executing any slash command.
 
 Check whether this command belongs to another agent's domain.
 If it does, load that agent before proceeding — don't do the
-work yourself. Use `~/.claude/ai_lounge/01_ai_brigade/README.md`
+work yourself. Use `~/.claude/product/README.md`
 to resolve the responsible agent.

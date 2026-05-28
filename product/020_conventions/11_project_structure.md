@@ -101,7 +101,7 @@ product/
 Brigade agents:
 
 ```text
-~/.claude/ai_lounge/01_ai_brigade/NNN_<domain>/<agent>.md
+~/.claude/product/010_agents/NNN_<domain>/<agent>.md
 ```
 
 Do not include `ai_agent`, `core`, or `project_agent` in file

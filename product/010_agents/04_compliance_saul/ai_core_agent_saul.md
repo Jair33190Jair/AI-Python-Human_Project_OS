@@ -130,8 +130,6 @@ belongs in one canonical source.
 
 ## Legal documents — volatile data belongs in annexes
 
-<!-- extends: ~/.claude/ai_lounge/02_conventions/04_no_duplication.md -->
-
 Anything that changes without triggering a new
 signature lives in a standalone versioned annex,
 not in signed core. Annex change → notify

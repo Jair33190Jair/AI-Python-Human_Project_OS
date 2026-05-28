@@ -46,7 +46,7 @@ for each new task. Never renumber.
 
 ### Deliverables
 
-**`~/.claude/commands/ai-fix-references.md`**
+**`~/.claude/commands/bob-fix-references.md`**
 
 ```markdown
 ---
@@ -84,13 +84,13 @@ Stop with `Blocked: <path> is not a git repo.` if it fails.
 With explicit args:
 
 ```bash
-bash ~/.claude/commands/ai-fix-references/fix.sh "$REPO_ROOT" "$OLD_PATH" "$NEW_PATH"
+bash ~/.claude/commands/bob-fix-references/fix.sh "$REPO_ROOT" "$OLD_PATH" "$NEW_PATH"
 ```
 
 With no rename args (infer from git):
 
 ```bash
-bash ~/.claude/commands/ai-fix-references/fix.sh "$REPO_ROOT"
+bash ~/.claude/commands/bob-fix-references/fix.sh "$REPO_ROOT"
 ```
 
 ## Output
@@ -107,7 +107,7 @@ Print the script's stdout verbatim. No additional commentary.
 
 ---
 
-**`~/.claude/commands/ai-fix-references/fix.sh`**
+**`~/.claude/commands/bob-fix-references/fix.sh`**
 
 ```bash
 #!/usr/bin/env bash

@@ -40,7 +40,7 @@ conventions. Never optional. Always override.
 
 ## Agent Delegation
 
-At session start, load `~/.claude/ai_lounge/01_ai_brigade/README.md`.
+At session start, load `~/.claude/product/README.md`.
 
 Before acting on any task, check whether it falls in another
 agent's domain. If it does, trigger that agent as a subagent
@@ -55,7 +55,7 @@ These apply to Kai and every loaded agent.
   `~/.claude/product/020_conventions/00_md_editing_context.md`.
   It includes the final trimming gate.
 - Before briefing another agent or filing a task, load
-  `~/.claude/ai_lounge/01_ai_brigade/README.md`
+  `~/.claude/product/README.md`
 - **Task queue is universal.** Every project keeps an
   `ai_tasks_open.md` at its root (e.g.
   `assisther/01_project/ai_tasks_open.md`). Any loaded
@@ -119,7 +119,7 @@ After normalization, project paths are root-relative from
 the project root. If the project root is ambiguous, use
 Steve's agent file as an anchor:
 
-- `~/.claude/ai_lounge/01_ai_brigade/010_main_steve/ai_core_agent_steve.md`
+- `~/.claude/product/010_agents/010_main_steve/ai_core_agent_steve.md`
 
 When a relative invocation path is still ambiguous, glob
 the brigade dir rather than guessing.
@@ -137,7 +137,7 @@ Resolution:
 
 - If a path is provided, read that agent file directly.
 - If only an agent name is provided, use
-  `~/.claude/ai_lounge/01_ai_brigade/README.md`
+  `~/.claude/product/README.md`
   to resolve the agent path.
 - If a project is provided, resolve the project root first,
   then load the agent file and the project root `README_AI.md`

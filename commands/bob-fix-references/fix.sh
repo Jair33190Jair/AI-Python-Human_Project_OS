@@ -39,11 +39,14 @@ else
   done < <(git ls-files --deleted)
 fi
 
-[[ ${#OLD_PATHS[@]} -gt 0 ]] || { echo "No renames to process."; exit 0; }
+if [[ ${#OLD_PATHS[@]} -eq 0 ]]; then
+  echo "No renames to process."
+fi
 
 FILES_RENAMED=0
 FILES_UPDATED=0
 
+if [[ ${#OLD_PATHS[@]} -gt 0 ]]; then
 for i in "${!OLD_PATHS[@]}"; do
   OLD="${OLD_PATHS[$i]}"
   NEW="${NEW_PATHS[$i]}"
@@ -73,5 +76,22 @@ for i in "${!OLD_PATHS[@]}"; do
     }
   done < <(git ls-files)
 done
+fi
 
 printf '\nDone: %d file(s) renamed, %d file(s) updated.\n' "$FILES_RENAMED" "$FILES_UPDATED"
+
+# Dead-ref audit — report ~/.claude/ paths that exist in tracked files but not on disk
+echo ""
+dead=()
+while IFS= read -r p; do
+  [[ -e "${p/\~/$HOME}" ]] || dead+=("$p")
+done < <(git ls-files | grep -v 'ai_tasks_closed' | xargs grep -hEo '~/.claude/[^`" )]+' 2>/dev/null | grep -vE '<|>|\[|\.\.\.' | sort -u)
+
+if [[ ${#dead[@]} -gt 0 ]]; then
+  echo "Dead references (need manual fix):"
+  for p in "${dead[@]}"; do
+    echo "  $p"
+  done
+else
+  echo "No dead references found."
+fi
