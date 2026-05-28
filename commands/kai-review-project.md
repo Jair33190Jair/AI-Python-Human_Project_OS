@@ -19,7 +19,7 @@ Defaults to the current working directory if omitted.
 ## Blocked conditions
 
 Stop and print `Blocked: <reason>` if:
-- No `AI_README.md` found at the resolved project root.
+- No `README_AI.md` found at the resolved project root.
 - A required convention file cannot be read.
 
 ## Execution
@@ -27,7 +27,7 @@ Stop and print `Blocked: <reason>` if:
 ### 1. Resolve project root
 
 Use `$ARGUMENTS` as the project root. If empty, use the current working directory.
-Confirm `AI_README.md` exists there or stop with Blocked.
+Confirm `README_AI.md` exists there or stop with Blocked.
 
 ### 2. Load conventions
 
@@ -38,7 +38,7 @@ Read in parallel — stop with Blocked if either is missing:
 ### 3. Map the project
 
 Run `find <root> -maxdepth 4 -not -path '*/.git/*'` to get the actual tree.
-Read `AI_README.md` from the project root.
+Read `README_AI.md` from the project root.
 
 ### 4. Run checks
 
@@ -49,7 +49,7 @@ FAIL = rule is violated. WARN = smell or missing best-practice, not a hard rule.
 
 | Check | Rule |
 |---|---|
-| `AI_README.md` present | Required |
+| `README_AI.md` present | Required |
 | `ai_tasks_open.md` present | Required |
 | `ai_tasks_closed.md` present | Required |
 | `.claude/commands/` present | Required |
@@ -58,10 +58,10 @@ FAIL = rule is violated. WARN = smell or missing best-practice, not a hard rule.
 
 | Check | Rule |
 |---|---|
-| `AI_README.md` has agent domain paths table (`Agent \| Domain path`) | Required |
-| Every agent in the table has its domain `AI_README.md` on disk | Required |
-| No per-project agent files at `project/<agent>.md` | Required — context belongs in domain `AI_README.md` |
-| Domain `AI_README.md` files contain no generic agent traits | Required — brigade files own those |
+| `README_AI.md` has agent domain paths table (`Agent \| Domain path`) | Required |
+| Every agent in the table has its domain `README_AI.md` on disk | Required |
+| No per-project agent files at `project/<agent>.md` | Required — context belongs in domain `README_AI.md` |
+| Domain `README_AI.md` files contain no generic agent traits | Required — brigade files own those |
 
 #### C. Project layer (`project/`)
 
@@ -86,8 +86,8 @@ FAIL = rule is violated. WARN = smell or missing best-practice, not a hard rule.
 
 | Check | Rule |
 |---|---|
-| All commands listed in `AI_README.md` slash commands table resolve to real files | Required |
-| All `.md` files in `commands/` or `.claude/commands/` are listed in `AI_README.md` | WARN if unlisted |
+| All commands listed in `README_AI.md` slash commands table resolve to real files | Required |
+| All `.md` files in `commands/` or `.claude/commands/` are listed in `README_AI.md` | WARN if unlisted |
 
 #### F. Markdown conventions
 
@@ -119,8 +119,8 @@ Print the full audit as a compact table:
 
 | Check | Status | Note |
 |---|---|---|
-| AI_README.md present | PASS | |
-| Agent domain paths table | FAIL | Add table to AI_README.md |
+| README_AI.md present | PASS | |
+| Agent domain paths table | FAIL | Add table to README_AI.md |
 | ... | ... | ... |
 
 ### Fix list

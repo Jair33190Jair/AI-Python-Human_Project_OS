@@ -140,11 +140,11 @@ Resolution:
   `~/.claude/ai_lounge/01_ai_brigade/README.md`
   to resolve the agent path.
 - If a project is provided, resolve the project root first,
-  then load the agent file and the project root `AI_README.md`
-  in parallel. The root `AI_README.md` contains the shared
+  then load the agent file and the project root `README_AI.md`
+  in parallel. The root `README_AI.md` contains the shared
   project context and the agent-to-domain path mapping. If
   it lists a domain path for the active agent, load that
-  domain's `AI_README.md` as well. No per-project agent files.
+  domain's `README_AI.md` as well. No per-project agent files.
 - If resolution is still ambiguous after checking the known
   indexes and anchors, ask one concise clarifying question.
 

@@ -22,7 +22,7 @@ Always present at the project root:
 
 ```
 CLAUDE.md          ← auto-loaded by Claude Code on launch
-AI_README.md       ← shared project context + agent domain path mapping
+README_AI.md       ← shared project context + agent domain path mapping
 ai_tasks_open.md   ← open tasks for all agents
 ai_tasks_closed.md ← closed tasks
 .claude/commands/  ← slash commands (auto-discovered by Claude Code)
@@ -34,17 +34,17 @@ Brigade agents are generic and reusable. No per-project agent files.
 
 When an agent is invoked on a project, Kai loads in parallel:
 1. The agent's brigade file
-2. The project root `AI_README.md` — shared context for all agents
-3. The agent's domain `AI_README.md` if listed in the root `AI_README.md`
+2. The project root `README_AI.md` — shared context for all agents
+3. The agent's domain `README_AI.md` if listed in the root `README_AI.md`
 
-The root `AI_README.md` must include an **agent domain paths table**:
+The root `README_AI.md` must include an **agent domain paths table**:
 
 ```markdown
 | Agent | Domain path |
 |-------|-------------|
-| Steve | `01_project/AI_README.md` |
-| Leo   | `02_architecture/AI_README.md` |
-| Saul  | `03_compliance/AI_README.md` |
+| Steve | `01_project/README_AI.md` |
+| Leo   | `02_architecture/README_AI.md` |
+| Saul  | `03_compliance/README_AI.md` |
 ```
 
 Omit an agent from the table if they have no domain-specific context
@@ -55,19 +55,19 @@ in this project.
 ```
 project/
   010_vision/            ← always present
-    AI_README.md         ← Steve's domain context
+    README_AI.md         ← Steve's domain context
     product_brief.md
     roadmap.md
     decisions.md
   020_architecture/      ← add when Leo has real architecture work
-    AI_README.md         ← Leo's domain context
+    README_AI.md         ← Leo's domain context
   030_compliance/        ← add when Saul has real compliance work
-    AI_README.md         ← Saul's domain context
+    README_AI.md         ← Saul's domain context
   # 040_builder/         ← add when Bob is building automation or app
 ```
 
-Domain `AI_README.md` files are created only when the agent has
-real domain-specific context to add beyond the root `AI_README.md`.
+Domain `README_AI.md` files are created only when the agent has
+real domain-specific context to add beyond the root `README_AI.md`.
 
 ## Product Layer
 
@@ -107,7 +107,7 @@ Brigade agents:
 Do not include `ai_agent`, `core`, or `project_agent` in file
 names when the folder already gives that context.
 
-Project context lives in `AI_README.md` files, not in
+Project context lives in `README_AI.md` files, not in
 per-agent files. Never create `<project>_<agent>.md`.
 
 ## Commands As Buttons

@@ -5,6 +5,8 @@ settings.local.json
 *.key
 
 # Runtime / ephemeral
+.last-cleanup
+.codex
 cache/
 debug/
 backups/

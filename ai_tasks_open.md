@@ -32,16 +32,17 @@ for each new task. Never renumber.
 
 ---
 
-## TASK-0008 — Create `/ai-fix-references` command + `fix.sh` script
+## TASK-0008 — Create `/bob-fix-references` command + `fix.sh` script
 - Date: 05-26
 - Requested by: user (via kai + /ai-create-command)
 - Target agent: bob
 - What: Build a global slash command that renames a file/dir and repairs all references
   to the old name across a git repo. When called without rename args, infers renames
   from `git diff --name-status HEAD` and staged changes.
-- Status: open
+- Status: done
 - Tag: tooling
 - Depends on: —
+- Shipped as: `~/.claude/commands/bob-fix-references.md` + `bob-fix-references/fix.sh`
 
 ### Deliverables
 
