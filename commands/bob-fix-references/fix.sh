@@ -47,11 +47,27 @@ FILES_RENAMED=0
 FILES_UPDATED=0
 
 if [[ ${#OLD_PATHS[@]} -gt 0 ]]; then
+# Find the first path segment that differs between old and new path.
+changed_segment() {
+  local old="$1" new="$2"
+  local IFS='/'
+  read -ra old_parts <<< "$old"
+  read -ra new_parts <<< "$new"
+  local i
+  for i in "${!old_parts[@]}"; do
+    if [[ "${old_parts[$i]}" != "${new_parts[$i]:-}" ]]; then
+      printf '%s\t%s\n' "${old_parts[$i]}" "${new_parts[$i]}"
+      return
+    fi
+  done
+  printf '%s\t%s\n' "$(basename "$old")" "$(basename "$new")"
+}
+
+declare -A _seg_done=()
+
 for i in "${!OLD_PATHS[@]}"; do
   OLD="${OLD_PATHS[$i]}"
   NEW="${NEW_PATHS[$i]}"
-  OLD_BASE="$(basename "$OLD")"
-  NEW_BASE="$(basename "$NEW")"
 
   printf '\n[rename] %s  →  %s\n' "$OLD" "$NEW"
 
@@ -61,13 +77,34 @@ for i in "${!OLD_PATHS[@]}"; do
     (( FILES_RENAMED++ )) || true
   fi
 
+  # Full path replacement
   while IFS= read -r f; do
     [[ -f "$f" && -r "$f" ]] || continue
     grep -qI '' "$f" 2>/dev/null || continue  # skip binary
 
     BEFORE="$(md5sum "$f")"
-    [[ "$OLD" != "$OLD_BASE" ]] && sed -i "s|${OLD}|${NEW}|g" "$f"
-    sed -i "s|${OLD_BASE}|${NEW_BASE}|g" "$f"
+    sed -i "s|${OLD}|${NEW}|g" "$f"
+    AFTER="$(md5sum "$f")"
+
+    [[ "$BEFORE" != "$AFTER" ]] && {
+      printf '  refs: %s\n' "$f"
+      (( FILES_UPDATED++ )) || true
+    }
+  done < <(git ls-files)
+
+  # Changed-segment replacement (e.g. old-dir-name → new-dir-name)
+  IFS=$'\t' read -r OLD_SEG NEW_SEG <<< "$(changed_segment "$OLD" "$NEW")"
+  [[ "$OLD_SEG" == "$NEW_SEG" ]] && continue
+  [[ -n "${_seg_done[$OLD_SEG]:-}" ]] && continue
+  _seg_done[$OLD_SEG]=1
+
+  while IFS= read -r f; do
+    [[ -f "$f" && -r "$f" ]] || continue
+    grep -qI '' "$f" 2>/dev/null || continue
+    grep -qF "$OLD_SEG" "$f" 2>/dev/null || continue
+
+    BEFORE="$(md5sum "$f")"
+    sed -i "s|${OLD_SEG}|${NEW_SEG}|g" "$f"
     AFTER="$(md5sum "$f")"
 
     [[ "$BEFORE" != "$AFTER" ]] && {

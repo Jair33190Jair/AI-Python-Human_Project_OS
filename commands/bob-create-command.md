@@ -1,6 +1,6 @@
 ---
 description: Create or recreate a Claude-style slash command. Not for Codex skills, agent profiles, or ordinary prompts.
-argument-hint: <command intent | ai-review-command output | path/to/draft-command.md>
+argument-hint: <command intent | bob-review-command output | path/to/draft-command.md>
 status: draft  # human flips to `stable` when satisfied
 owner: bob
 model: sonnet 
@@ -14,7 +14,7 @@ existing draft command path.
 Create Claude-style slash commands only.
 Do not create Codex skills or agent profiles.
 
-This command is chainable from `/ai-review-command` when that
+This command is chainable from `/bob-review-command` when that
 review ends with `Decision: Recreate` and the user confirms.
 
 ---
@@ -35,7 +35,7 @@ If preflight reports `Blocked`, stop and print the blocked line.
 Preflight classifies the anchor:
 
 - **Intent:** user describes a command that does not exist yet.
-- **Review:** user provides `/ai-review-command` findings with
+- **Review:** user provides `/bob-review-command` findings with
   `Decision: Recreate`.
 - **Draft:** anchor resolves to an existing command `.md` file.
 
@@ -102,7 +102,7 @@ Use these defaults when they are safe:
 - placement: global for reusable workflows, project for local ones;
 - `$ARGUMENTS`: one anchor unless the user needs more;
 - output: concise terminal report unless files are required;
-- validation: run `/ai-review-command` on the created command.
+- validation: run `/bob-review-command` on the created command.
 
 Stop and ask instead of assuming when the answer changes:
 
@@ -172,17 +172,17 @@ deterministic, repeated, and safer as code than prose.
 Do not include generic AI advice. Do not restate global
 conventions except where the command extends them.
 
-Target a clean result against the current `/ai-review-command`
+Target a clean result against the current `/bob-review-command`
 rubric.
 
 ## Quality Gate
 
-Run the finished command through `/ai-review-command`.
+Run the finished command through `/bob-review-command`.
 
 If the result is `Decision: No change`, report the new command path.
 
 If the result is `Decision: Patch`, apply one focused patch and
-rerun `/ai-review-command`. Repeat once if needed. If it still
+rerun `/bob-review-command`. Repeat once if needed. If it still
 returns `Patch`, stop and report the remaining findings.
 
 If the result is `Decision: Recreate`, stop and ask the focused AI

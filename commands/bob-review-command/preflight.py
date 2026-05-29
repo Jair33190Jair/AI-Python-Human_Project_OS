@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Deterministic preflight for /ai-review-command."""
+"""Deterministic preflight for /bob-review-command."""
 
 from __future__ import annotations
 
@@ -11,7 +11,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[2]
-SUPPORT_RUBRIC = ROOT / "commands/ai-review-command/rubric.md"
+SUPPORT_RUBRIC = ROOT / "commands/bob-review-command/rubric.md"
 
 PATH_TOKEN = re.compile(r"(?<![\w.-])(?:~/?|[A-Za-z0-9_./-]+/)[A-Za-z0-9_./~-]+")
 CODE_SPAN = re.compile(r"`([^`\n]+)`")
@@ -134,7 +134,7 @@ def print_list(title: str, values: list[str]) -> None:
 
 def main() -> int:
     parser = argparse.ArgumentParser(
-        description="Run deterministic checks for /ai-review-command."
+        description="Run deterministic checks for /bob-review-command."
     )
     parser.add_argument("anchor", help="Skill/command file or skill folder.")
     args = parser.parse_args()
@@ -154,7 +154,7 @@ def main() -> int:
     label = context_label(len(files), 1 if len(files) > 1 else 0, anchor_lines)
     stale = stale_scan([anchor, *refs])
 
-    print("ai-review-command preflight")
+    print("bob-review-command preflight")
     print(f"anchor: {display_path(anchor)}")
     print(f"anchor_lines: {anchor_lines}")
     print(f"support_rubric: {'ok' if SUPPORT_RUBRIC.exists() else 'missing'}")

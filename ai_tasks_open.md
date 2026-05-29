@@ -178,20 +178,20 @@ printf '\nDone: %d file(s) renamed, %d file(s) updated.\n' "$FILES_RENAMED" "$FI
 ### Notes for Bob
 
 - Make `fix.sh` executable (`chmod +x`).
-- Run `/ai-review-command` on the finished command markdown before marking done.
+- Run `/bob-review-command` on the finished command markdown before marking done.
 - Related: TASK-0006 (`/ai-restructure`) covers the AI-driven JSON-plan variant;
   this command is the simpler explicit-rename path. No overlap in deliverables.
 
 ---
 
-## TASK-0007 — Refine `/ai-review-command` to converge in one pass
+## TASK-0007 — Refine `/bob-review-command` to converge in one pass
 - Date: 2026-05-09
 - Requested by: user
 - Target agent: kai
 - What: Stop the review-patch oscillation cycle. Files:
-  `~/.claude/commands/ai-review-command.md`,
-  `~/.claude/commands/ai-review-command/rubric.md`,
-  `~/.claude/commands/ai-review-command/preflight.py`. Changes:
+  `~/.claude/commands/bob-review-command.md`,
+  `~/.claude/commands/bob-review-command/rubric.md`,
+  `~/.claude/commands/bob-review-command/preflight.py`. Changes:
   (1) **Risk-only Low bar** — flag Low only when not fixing it
   carries real risk (broken contract, ambiguous output, drift); strip
   cosmetic flagging from rubric S4/S5/S10/S11. (2) **Mandatory
@@ -204,7 +204,7 @@ printf '\nDone: %d file(s) renamed, %d file(s) updated.\n' "$FILES_RENAMED" "$FI
   file so the same finding is not relitigated. (5) **Preflight deep
   ref scan** — extend `preflight.py` to walk referenced scripts and
   conventions one hop deep and flag contracts that look unmentioned
-  in the anchor body. Acceptance: re-running `/ai-review-command` on
+  in the anchor body. Acceptance: re-running `/bob-review-command` on
   a freshly rewritten target three times yields "No change" each
   time. Plan: `~/.claude/plans/this-is-so-frustrating-jaunty-avalanche.md`.
 - Status: open

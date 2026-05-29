@@ -2,7 +2,7 @@
 description: Review a skill or slash command for instruction quality and scriptability. Not for agent profiles or drafting prompts. Findings only — no auto-fix.
 argument-hint: <path/to/SKILL.md|path/to/command.md|path/to/skill-folder>
 status: refining  # human flips to `stable` when satisfied
-owner: leo
+owner: bob
 ---
 
 You are running a **skill-review** audit.
@@ -24,7 +24,7 @@ flag and strip it before processing the anchor path.
 Run preflight first:
 
 ```bash
-python3 ~/.claude/commands/ai-review-command/preflight.py "$ANCHOR"
+python3 ~/.claude/commands/bob-review-command/preflight.py "$ANCHOR"
 ```
 
 where `$ANCHOR` is `$ARGUMENTS` with `--with-scripts` removed.
@@ -67,7 +67,7 @@ paste/write instructions that need human interpretation.
 
 ## Checks
 
-Read `~/.claude/commands/ai-review-command/rubric.md`
+Read `~/.claude/commands/bob-review-command/rubric.md`
 and run S1–S12 from it.
 Skip checks that pass cleanly.
 
@@ -124,7 +124,7 @@ Instruction clarity: `<Clear | Mixed | Unclear>` — <1-line reason>
 ## Script Review
 
 If `--with-scripts` was set, load and execute
-`~/.claude/commands/ai-review-command/script-review.md`.
+`~/.claude/commands/bob-review-command/script-review.md`.
 
 ## Final Validation
 
