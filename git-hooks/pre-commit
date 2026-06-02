@@ -42,6 +42,10 @@ while IFS=$'\t' read -r old_path new_path; do
   [[ -n "${seen_segments[$old_seg]:-}" ]] && continue
   seen_segments[$old_seg]=1
 
+  # Skip if old segment still has tracked files under it (partial move, not a full rename)
+  still_exists=$(git -C "$repo_root" ls-files | grep -m1 "/$old_seg/" || true)
+  [[ -n "$still_exists" ]] && continue
+
   hits=$(git -C "$repo_root" grep --cached -l "$old_seg" 2>/dev/null || true)
   if [[ -n "$hits" ]]; then
     if [[ $found_any -eq 0 ]]; then
@@ -68,7 +72,7 @@ fi
 # Dead reference scan — check all ~/.claude/ paths referenced in tracked files
 dead_refs=$(git ls-files | grep -v 'dev_tasks_closed' | xargs grep -hEo '~/.claude/[^`" )]+' 2>/dev/null | grep -vE '<|>|\[|\.\.\.' | sort -u | while read -r p; do
   [[ -e "${p/\~/$HOME}" ]] || echo "  $p"
-done)
+done || true)
 
 if [[ -n "$dead_refs" ]]; then
   echo ""

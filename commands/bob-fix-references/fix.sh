@@ -140,6 +140,10 @@ printf '\nDone: %d file(s) renamed, %d file(s) updated.\n' "$FILES_RENAMED" "$FI
 hook=""
 [[ -x git-hooks/pre-commit ]] && hook="git-hooks/pre-commit"
 [[ -z "$hook" && -x .git/hooks/pre-commit ]] && hook=".git/hooks/pre-commit"
+if [[ -z "$hook" ]]; then
+  global_hooks=$(git config --get core.hooksPath 2>/dev/null || true)
+  [[ -n "$global_hooks" && -x "$global_hooks/pre-commit" ]] && hook="$global_hooks/pre-commit"
+fi
 if [[ -n "$hook" ]]; then
   echo ""
   echo "Running pre-commit hook..."

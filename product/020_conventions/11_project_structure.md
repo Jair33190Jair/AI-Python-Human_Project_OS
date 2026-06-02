@@ -67,6 +67,9 @@ project/
     pricing_model.md
     marketing_plan.md
     brand.md
+    funding.md
+    # brand/              ← add when brand has multiple artifacts
+    # funding/            ← add when funding has multiple artifacts
   030_architecture/      ← add when Leo has real architecture work
     README_AI.md         ← Leo's domain context
   040_compliance/        ← add when Saul has real compliance work
@@ -82,8 +85,14 @@ projects. Strategy covers the product brief, roadmap, priorities,
 and decisions without making the folder sound aspirational.
 
 Use `020_business/` for the commercial side: business plan, pricing,
-marketing, and brand strategy. Actual user-facing copy, site files,
-or app assets live in `product/`.
+marketing, brand strategy, and funding. Keep each as a single file
+until it needs multiple artifacts. Then expand that topic into a
+subfolder, for example `brand/` or `funding/`. Actual user-facing
+copy, site files, or app assets live in `product/`.
+
+Use `030_architecture/` for internal system decisions: component
+boundaries, data flow, security, database, integrations, and ADRs.
+Do not use it for product or UX design.
 
 ## Product Layer
 
@@ -105,6 +114,10 @@ The landing page belongs in `product/070_site/`. Keep it in the
 same repository by default while the product is being validated.
 Split it into a separate GitHub repository only when it has its
 own deployment lifecycle, collaborators, or public/private boundary.
+
+Product and UX design belong in `product/020_experience/`: flows,
+screens, onboarding, dashboard behavior, consent flows, review
+flows, and product copy. Built app code belongs in `product/060_app/`.
 
 ## Rules
 
