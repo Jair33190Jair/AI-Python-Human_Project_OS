@@ -6,7 +6,7 @@ description: Global task queue for cross-project and brigade-level work.
 # Global Task Queue
 
 Async inbox for handoffs between agents.
-Newest on top. Done/obsolete → `ai_tasks_closed.md`.
+Newest on top. Done/obsolete → `dev_tasks_closed.md`.
 
 ### Schema
 

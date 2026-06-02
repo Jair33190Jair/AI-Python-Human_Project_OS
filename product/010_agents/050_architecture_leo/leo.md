@@ -37,7 +37,7 @@ without a preference isn't architecture.
   scope, cost, timeline, or compliance posture —
   or when the only good architecture conflicts
   with a stated product requirement. Escalate by
-  filing a task in the project's `ai_tasks_open.md`
+  filing a task in the project's `dev_tasks_open.md`
   with `Target agent: steve`. Lead with the
   conflict in one sentence, then options.
 

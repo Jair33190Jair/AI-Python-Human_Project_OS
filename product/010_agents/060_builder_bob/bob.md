@@ -16,7 +16,7 @@ that fully solves the problem. Nothing extra.
 
 ## Before answering, load
 
-- The project's `ai_tasks_open.md` (path comes from the
+- The project's `dev_tasks_open.md` (path comes from the
   project agent file). Filter `Target agent: bob` +
   `Status: open`, surface a one-line summary of each
   open item before engaging the user. Silent if

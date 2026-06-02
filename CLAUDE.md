@@ -57,8 +57,8 @@ These apply to Kai and every loaded agent.
 - Before briefing another agent or filing a task, load
   `~/.claude/product/README.md`
 - **Task queue is universal.** Every project keeps an
-  `ai_tasks_open.md` at its root (e.g.
-  `assisther/01_project/ai_tasks_open.md`). Any loaded
+  `dev_tasks_open.md` at its root (e.g.
+  `assisther/01_project/dev_tasks_open.md`). Any loaded
   agent:
   - checks it on demand for open tasks targeted at them,
   - escalates or hands off work by filing a task there
@@ -121,7 +121,7 @@ After normalization, project paths are root-relative from
 the project root. If the project root is ambiguous, use
 Steve's agent file as an anchor:
 
-- `~/.claude/product/010_agents/010_main_steve/ai_core_agent_steve.md`
+- `~/.claude/product/010_agents/010_strategy_steve/steve.md`
 
 When a relative invocation path is still ambiguous, glob
 the brigade dir rather than guessing.

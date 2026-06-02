@@ -33,7 +33,7 @@ reviewer: <human name(s) or unassigned>
 - Always use English keys.
 
 **Don't own the file?** Don't edit it — raise a task in
-`ai_tasks_open.md` targeting the owner.
+`dev_tasks_open.md` targeting the owner.
 **Kai override:** may modify any file for structural or
 cross-agent changes — log as a resolution note.
 

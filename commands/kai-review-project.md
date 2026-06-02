@@ -50,8 +50,8 @@ FAIL = rule is violated. WARN = smell or missing best-practice, not a hard rule.
 | Check | Rule |
 |---|---|
 | `README_AI.md` present | Required |
-| `ai_tasks_open.md` present | Required |
-| `ai_tasks_closed.md` present | Required |
+| `dev_tasks_open.md` present | Required |
+| `dev_tasks_closed.md` present | Required |
 | `.claude/commands/` present | Required |
 
 #### B. Agent Context Model
@@ -67,19 +67,19 @@ FAIL = rule is violated. WARN = smell or missing best-practice, not a hard rule.
 
 | Check | Rule |
 |---|---|
-| `project/010_vision/` present | Required |
-| No undeclared subfolders (not in ai_README layout) | WARN if found |
+| `project/010_strategy/` present | Required |
+| No undeclared subfolders (not in `README_AI.md` layout) | WARN if found |
 
 #### D. Product layer (`product/`)
 
 | Check | Rule |
 |---|---|
 | `product/` present | Required |
-| Primary core domain folder (`product/010_*/`) present | Required |
-| `coordinator.md` present in core domain folder | Required |
-| `product/020_workflows/` present | Required |
-| `product/030_templates/` present | Required |
-| No undeclared subfolders (not in ai_README layout) | WARN if found |
+| `product/010_core/` present | Required |
+| `coordinator.md` present in `product/010_core/` when role workflows exist | Required |
+| `product/020_experience/` present | Required |
+| `product/030_content/` present | Required |
+| No undeclared subfolders (not in `README_AI.md` layout) | WARN if found |
 | No empty directories | WARN if found |
 
 #### E. Slash commands
@@ -101,12 +101,12 @@ Flag any file that contains more than 2 distinct path references to other `.md` 
 | No `../` path references | Required |
 | Files with > 2 outbound `.md` path references | WARN (chain depth approximation) |
 
-#### G. ai_README accuracy
+#### G. README_AI accuracy
 
 | Check | Rule |
 |---|---|
-| Every folder listed in the ai_README layout section exists on disk | Required |
-| Every folder on disk (non-hidden, non-tooling) is listed in ai_README layout | WARN if undocumented |
+| Every folder listed in the `README_AI.md` layout section exists on disk | Required |
+| Every folder on disk (non-hidden, non-tooling) is listed in `README_AI.md` layout | WARN if undocumented |
 
 ### 5. Report
 

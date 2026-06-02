@@ -69,7 +69,7 @@ Severity: Low. Requires judgment — only flag clear restatements, not extension
 **C7 — Dead task references**
 `grep` for every `TASK-NNNN` reference in the anchor file.
 For each referenced TASK-ID, verify it appears in either
-`ai_tasks_open.md` or `ai_tasks_closed.md` in the project.
+`dev_tasks_open.md` or `dev_tasks_closed.md` in the project.
 Fail = ID not found in either file. Severity: Med.
 
 ---

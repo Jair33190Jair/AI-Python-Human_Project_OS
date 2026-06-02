@@ -122,7 +122,7 @@ echo ""
 dead=()
 while IFS= read -r p; do
   [[ -e "${p/\~/$HOME}" ]] || dead+=("$p")
-done < <(git ls-files | grep -v 'ai_tasks_closed' | xargs grep -hEo '~/.claude/[^`" )]+' 2>/dev/null | grep -vE '<|>|\[|\.\.\.' | sort -u)
+done < <(git ls-files | grep -v 'dev_tasks_closed' | xargs grep -hEo '~/.claude/[^`" )]+' 2>/dev/null | grep -vE '<|>|\[|\.\.\.' | sort -u)
 
 if [[ ${#dead[@]} -gt 0 ]]; then
   echo "Dead references (need manual fix):"
