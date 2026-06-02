@@ -117,6 +117,15 @@ fi
 
 printf '\nDone: %d file(s) renamed, %d file(s) updated.\n' "$FILES_RENAMED" "$FILES_UPDATED"
 
+hook=""
+[[ -x git-hooks/pre-commit ]] && hook="git-hooks/pre-commit"
+[[ -z "$hook" && -x .git/hooks/pre-commit ]] && hook=".git/hooks/pre-commit"
+if [[ -n "$hook" ]]; then
+  echo ""
+  echo "Running pre-commit hook..."
+  bash "$hook"
+fi
+
 # Dead-ref audit — report ~/.claude/ paths that exist in tracked files but not on disk
 echo ""
 dead=()
