@@ -1,7 +1,27 @@
 #!/usr/bin/env bash
 # Rename a file/dir and repair all text references in a git repo.
 # Usage: fix.sh <repo_root> [<old_path> <new_path>]
+#        fix.sh --all <search_root>...
 set -euo pipefail
+
+if [[ "${1:-}" == "--all" ]]; then
+  shift
+  search_roots=("${@:-.}")
+  repos=()
+  while IFS= read -r d; do
+    repos+=("${d%/.git}")
+  done < <(find "${search_roots[@]}" -maxdepth 6 -name .git -type d 2>/dev/null | grep -v '/.git/' | sort)
+  if [[ ${#repos[@]} -eq 0 ]]; then
+    echo "No git repos found under: ${search_roots[*]}"
+    exit 0
+  fi
+  for repo in "${repos[@]}"; do
+    echo ""
+    echo "━━━ $repo ━━━"
+    bash "$0" "$repo" || true
+  done
+  exit 0
+fi
 
 REPO="${1:-.}"
 shift || true

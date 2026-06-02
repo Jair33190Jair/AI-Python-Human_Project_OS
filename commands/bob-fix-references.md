@@ -12,7 +12,7 @@ name across all tracked text files.
 
 | Arg | Required | Description |
 |---|---|---|
-| `repo_root` | no | Repo root path. Defaults to `$PWD`. |
+| `repo_root` | no | Repo root path. Defaults to all workspace repos. |
 | `old_path` | no* | Old file or directory path (relative to repo root). |
 | `new_path` | no* | New file or directory path (relative to repo root). |
 
@@ -21,33 +21,30 @@ name across all tracked text files.
 ## Parse
 
 ```
-REPO_ROOT="${ARGUMENTS[0]:-$PWD}"
+REPO_ROOT="${ARGUMENTS[0]:-}"
 OLD_PATH="${ARGUMENTS[1]:-}"
 NEW_PATH="${ARGUMENTS[2]:-}"
+WORKSPACE_DIRS=<all open workspace root directories from the current session>
 ```
-
-## Resolve
-
-Confirm `repo_root` is a git repository:
-
-```bash
-git -C "$REPO_ROOT" rev-parse --show-toplevel
-```
-
-Stop with `Blocked: <path> is not a git repo.` if it fails.
 
 ## Execute
 
-With explicit args:
+With explicit repo + rename args:
 
 ```bash
 bash ~/.claude/commands/bob-fix-references/fix.sh "$REPO_ROOT" "$OLD_PATH" "$NEW_PATH"
 ```
 
-With no rename args (infer from git):
+With explicit repo, no rename args (infer from git):
 
 ```bash
 bash ~/.claude/commands/bob-fix-references/fix.sh "$REPO_ROOT"
+```
+
+With no args — run across all workspace repos:
+
+```bash
+bash ~/.claude/commands/bob-fix-references/fix.sh --all $WORKSPACE_DIRS
 ```
 
 ## Output
@@ -56,5 +53,5 @@ Print the script's stdout verbatim. No additional commentary.
 
 ## Hard Rules
 
-- Never operate outside the resolved repo root.
-- If no renames detected and no args given, stop and say so.
+- Never operate outside the resolved repo root(s).
+- If no renames detected anywhere, say so.
