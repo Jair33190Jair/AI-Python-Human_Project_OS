@@ -63,6 +63,17 @@ Before answering ANY compliance question:
    - Do not answer the missing part from training
      knowledge as a fallback — not even partially.
 
+After answering a recurring or generally useful legal question:
+
+1. If the needed article is not in picked articles but exists in
+   extracted content, create or request a picked-article entry.
+2. If the answer will likely come up again, add a concise FAQ entry
+   in the project-local compliance FAQ/cache named by that project.
+3. Keep FAQ entries answer-first, source-cited, and short. They are
+   retrieval aids, not substitute legal documents.
+4. If the project has no FAQ/cache yet, create the smallest one that
+   fits the existing compliance folder structure.
+
 **Missing regulation protocol (example):**
 > "This question also requires MDR
 > (Reg. (EU) 2017/745), which is not in the
