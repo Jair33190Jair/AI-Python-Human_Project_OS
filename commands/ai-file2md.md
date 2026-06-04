@@ -278,45 +278,67 @@ date:       MM-YY
 tier_used:  1 | 2 | 3 | 4 | needs_ocr
 ```
 
+---
+
+## Visual Review & Repair (mandatory — runs before Acceptance Gate)
+
+After writing the initial `.md`, render **every page** of the source
+and compare it directly against the markdown output. This step is
+not optional and is not deferred to `retry`.
+
+**PDF — render all pages:**
+
+```bash
+pdftoppm -f 1 -l 999 -png -r 140 "file.pdf" /tmp/file2md_review
+```
+
+Read each rendered page and cross-check the corresponding section
+in the `.md`. For each page, look for:
+
+- **Fused text** — words or nav items joined without spaces
+  (e.g. "How it worksPricing") → split correctly
+- **Page artifacts** — running headers/footers (e.g. "Doc Title 04")
+  → remove
+- **Wrong heading hierarchy** — ALL CAPS labels that are subsections
+  should be `###`, not flat text or auto-promoted `##`
+- **Missing section headings** — section title and section label
+  extracted as a single fused line → split into `## N — Title`
+- **Layout structure lost** — multi-column grids (colour swatches,
+  feature cards, DO/DON'T pairs) that the extractor flattened
+  → reconstruct as tables, `**Label:** value` pairs, or blockquotes
+- **Image-only content** (logos, illustrations, mockups) — note
+  with `*[visual: description]*`; never fabricate text content
+- **Noise characters** — stray symbols (✕, §, bullet artifacts)
+  that do not represent real content → remove
+
+After identifying all issues, rewrite the `.md` in one pass with
+all repairs applied. Do not ask the human between discovery and
+repair — complete the full fix first.
+
+For non-PDF formats (DOCX, PPTX, XLSX), apply the same visual
+check using available previews or slide/sheet structure, and repair
+the same categories of issues.
+
+---
+
 ## Acceptance Gate
 
-After writing the `.md`, stop and ask the human to review it.
-Do not hand the file to a downstream analysis command yet.
-This gate belongs here, not in project-specific analysis commands.
+After the Visual Review & Repair pass is complete, present the
+`.md` to the human for final approval. Do not hand the file to a
+downstream analysis command yet.
 
 Ask for one of two decisions:
 
 - `accepted`: the markdown is good enough for downstream use.
 - `retry`: the markdown is not good enough; collect the concrete
-  issue, adapt the extraction or cleanup path, rewrite the same
-  `.md`, and ask again.
-
-On `retry`, build visual awareness of the input before changing
-anything:
-
-- Inspect the source layout directly: render relevant PDF pages,
-  slides, sheets, or an equivalent preview for the file type.
-- Identify the concrete extraction failure against that visual
-  source, not just against the flawed markdown.
-- Plan the smallest extraction or cleanup adaptation that addresses
-  the failure.
-- Apply the adaptation only when it should not worsen results for
-  earlier files processed through the same script or tier.
-- If no adaptation is available without meaningful regression risk,
-  tell the human and leave the script and `.md` unchanged.
-
-When an adaptation is safe, make it, rerun `/ai-file2md` on the same
-source, rewrite the `.md`, and ask for feedback again.
+  issue, re-inspect the relevant source pages, apply the smallest
+  safe fix, rewrite the `.md`, and ask again.
 
 Repeat until the human says `accepted` or the source is blocked
 (`needs_ocr`, unreadable, unsupported, or missing tooling).
 
 If another command or agent invoked `/ai-file2md`, return
 `Review: pending human acceptance` to that caller and stop there.
-
-Optional: use a cheap AI reviewer or subagent before the human
-review to catch obvious extraction defects. That reviewer may
-recommend `retry`, but only the human can approve `accepted`.
 
 Final chat output after acceptance:
 
