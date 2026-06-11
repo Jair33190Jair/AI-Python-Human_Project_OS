@@ -206,7 +206,7 @@ printf '\nDone: %d file(s) renamed, %d file(s) updated.\n' "$FILES_RENAMED" "$FI
   conventions one hop deep and flag contracts that look unmentioned
   in the anchor body. Acceptance: re-running `/bob-review-command` on
   a freshly rewritten target three times yields "No change" each
-  time. Plan: `~/.claude/plans/this-is-so-frustrating-jaunty-avalanche.md`.
+  time.
 - Status: open
 - Tag: tooling, reviewer
 - Depends on: —
