@@ -175,3 +175,11 @@ risks).
 
 **Service contracts:** ≤10 sections, ≤2 pages,
 no sub-sub-sections.
+
+## Only when necessary
+
+For legal/compliance copy specifically: only add text
+when there is a genuine gap that existing mechanisms
+(a privacy link, an existing notice, a clause elsewhere)
+don't already close. If the requirement is satisfied,
+don't restate it inline.

@@ -23,5 +23,6 @@ source "$VENV/bin/activate"
 
 pip install --quiet --upgrade pip
 pip install --quiet -r "$REQ"
+playwright install chromium --quiet
 
 touch "$STAMP"
