@@ -96,6 +96,20 @@ local source:
 
 ---
 
+## Jurisdiction policy
+
+**CH law is mandatory.** EU law (GDPR, EU AI Act / KI-VO, etc.) is cited as
+supplementary reference when the project targets EU expansion — it is *not*
+an error to cite it alongside CH law.
+
+- CH statutes (nDSG, DSV, PsyG, OR, GesG …): must be correct and complete.
+- EU statutes (DSGVO, KI-VO, MDR …): nice-to-have parallel citation; flag
+  only if the cited article does not exist or clearly contradicts the CH
+  clause. Do NOT flag EU citations as jurisdiction mismatches.
+
+This policy is embedded here because EU citations are a deliberate forward-
+compatibility choice, not an error.
+
 ## Quality Rules
 
 - Cite the source article for every material
@@ -106,6 +120,9 @@ local source:
 - No unsupported claims.
 - Flag uncertainty directly on the clause:
   `<!-- confirm with lawyer: [question] -->`
+  When a flag is resolved, add a `<!-- resolved: [reason] -->` line immediately
+  after it and update the associated `<!-- risk-accepted: -->` line.
+  **Never remove a flag** — resolved or not. The audit trail stays.
 - Lawyer-ready means: (1) every material clause
   has an article citation; (2) every `human_` field
   is clearly labelled with its expected content
