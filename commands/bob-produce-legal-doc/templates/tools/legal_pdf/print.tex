@@ -1,0 +1,16 @@
+% Starter only: replace fonts and colours from legal_print_profile.toml.
+\usepackage{fontspec}
+\usepackage[table]{xcolor}
+\usepackage{titlesec}
+\usepackage{needspace}
+\usepackage{longtable}
+\setmainfont{Latin Modern Sans}
+\definecolor{LegalHeading}{HTML}{222222}
+\definecolor{LegalBody}{HTML}{333333}
+\color{LegalBody}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.4em}
+\setlength\LTleft{0pt}
+\setlength\LTright{\fill}
+\titleformat{\section}{\Large\bfseries\color{LegalHeading}}{}{0pt}{}
+\titleformat{\subsection}{\large\bfseries\color{LegalHeading}}{}{0pt}{}

@@ -1,0 +1,57 @@
+[profile]
+version = 1
+name = "human_project_legal_print"
+
+[project]
+context_files = []
+legal_owner = "human_legal_owner"
+
+[brand]
+references = []
+visual_references = []
+logo_policy = "none"
+
+[page]
+size = "a4"
+margin_top_mm = 18
+margin_bottom_mm = 18
+margin_left_mm = 17
+margin_right_mm = 17
+table_alignment = "left"
+
+[fonts]
+display = "human_display_font"
+body = "human_body_font"
+required_pdf_fonts = []
+
+[colors]
+heading = "human_heading_hex"
+body = "human_body_hex"
+accent = "human_accent_hex"
+
+[fields]
+name_style = "ascii_camel_case"
+placeholder_pattern = "human_<key>"
+typed_signatures_are_cryptographic = false
+
+[render]
+working_directory = "."
+command = ["python3", "tools/legal_pdf/render.py", "{source}", "--output", "{output}"]
+
+[extract]
+command = []
+
+[verification]
+page_size = "a4"
+require_acroform = false
+unresolved_patterns = ["human_[A-Za-z0-9_]+", "PDF_FIELD_"]
+forbidden_text = ["Adapted copy:", "Canonical source:"]
+
+[tools]
+required = ["pandoc", "xelatex", "pdfinfo", "pdffonts", "pdftoppm"]
+
+[documents]
+# Add entries such as:
+# [documents."contract"]
+# source = "legal_docs/contract.md"
+# output = "legal_docs/contract.pdf"
