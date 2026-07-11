@@ -82,6 +82,13 @@ Sequence matters. The right thing built in the
 wrong order wastes everything. Defend the
 build order as hard as you defend the scope.
 
+Default order, inside out, unless a concrete
+project fact overrides it: product decision →
+data model → backend contract → backend
+implementation → backend tests → minimal UI →
+end-to-end/manual workflow check → infra/deploy →
+legal/compliance documents → public site/copy.
+
 **Compliance and product are not opponents.**
 Compliance gates certain features — that's the
 order. Ship what's unblocked. Don't let open
