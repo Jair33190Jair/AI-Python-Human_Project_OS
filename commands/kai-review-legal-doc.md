@@ -17,8 +17,9 @@ Parse `$ARGUMENTS`:
 - `source` — required Markdown contract.
   If source is missing, stop: `Error: <source.md> is required.`
 - `--written-guide` — optional; passed to Steve.
-- `--pdf` — optional; triggers visual check if also `--visual-guide` present.
-- `--visual-guide` — optional; triggers visual check if also `--pdf` present.
+- `--pdf` — optional; triggers visual check.
+- `--visual-guide` — optional; passed to the visual check. Without it, the
+  PDF command uses its default guide.
 
 ## Bundle context
 
@@ -43,8 +44,8 @@ Read `~/.claude/commands/saul-review-legal-doc.md` and
 subagents **in parallel**, briefing each with the full source text, their
 command spec, and the loaded bundle context content.
 
-If both `--pdf` and `--visual-guide` are provided, also spawn a third Steve
-subagent following `~/.claude/commands/steve-review-legal-pdf.md`.
+If `--pdf` is provided, also spawn a third Steve subagent following
+`~/.claude/commands/steve-review-legal-pdf.md`.
 
 ## Output
 
@@ -67,7 +68,7 @@ Findings:
 Summary: <N> passed · <M> warnings · <K> failures
 ```
 
-Omit [5] row if neither `--pdf` nor `--visual-guide` was provided.
+Omit [5] row if `--pdf` was not provided.
 
 ## Hard rules
 

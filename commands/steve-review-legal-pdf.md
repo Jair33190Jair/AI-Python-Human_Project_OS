@@ -1,6 +1,6 @@
 ---
 description: Steve's visual review of a rendered legal PDF against the visual brand guide. Checks colour, typography, layout, and signature blocks.
-argument-hint: <pdf> --visual-guide <path>
+argument-hint: <pdf> [--visual-guide <path>]
 status: draft
 owner: steve
 model: sonnet
@@ -29,19 +29,20 @@ this?):
 Parse `$ARGUMENTS`:
 
 - `pdf` — required; the rendered PDF to review.
-- `--visual-guide` — required; brand visual guide to check against.
+- `--visual-guide` — optional; defaults to
+  `project/020_business/brand/content_guide_visual.md`.
 
-If either argument is missing, stop immediately and output:
+If `pdf` is missing, stop immediately and output:
 
 ```
-Error: both <pdf> and --visual-guide are required.
+Error: <pdf> is required.
 ```
 
 Read every page of the PDF as images before reporting. Do not skip pages.
 
 ## Your scope — check 5
 
-**[5] Visual design** — Check against `--visual-guide`:
+**[5] Visual design** — Check against the visual guide:
 
 - Colour roles (Warm Cream, Cobalt, Dusty Rose, etc. used as specified).
 - Fonts: Instrument Serif for headings/display, Inter for body/UI/labels.
