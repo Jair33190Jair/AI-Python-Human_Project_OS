@@ -64,17 +64,11 @@ Load in parallel:
 - `$CONTENT_FILE` if provided
 - `$SCREENSHOT_DESKTOP` PNG (visual review)
 
-## Phase 3 — Section Map
+## Phase 3 — Section Map (internal reasoning)
 
-Create a short section map from the visible page and the HTML:
-
-- section name / anchor / approximate scroll position;
-- main decision-stage job;
-- primary promise, proof, objection, or CTA;
-- matching content-source section if `$CONTENT_FILE` exists.
-
-Use this map to keep findings grounded. Review only the page in front
-of you, not an imagined future page.
+Build a mental section map to keep findings grounded: section name / anchor /
+scroll position; main job; primary promise, proof, or CTA; matching content-source
+section if `$CONTENT_FILE` exists. Review only the page in front of you.
 
 ## Phase 4 — Review
 
@@ -84,16 +78,15 @@ instead of blindly enforcing it. Do not invent legal, privacy, hosting,
 processor, or security facts.
 
 ### Trim And Duplication
-Check before anything else. Trim findings outweigh additive
-recommendations.
+Check before anything else. Trim findings outweigh additive recommendations.
 
-- Identify sections that say the same thing at the same decision stage with no new information. Apply the rule: same emotional stage + adjacent + no new info = flag for cut.
-- Identify lists or labels repeated verbatim across adjacent sections.
-- Decide whether repeated ideas earn their place because they catch the
-  visitor at a different decision stage.
-- Flag defensive FAQs or edge-case answers that block no realistic
-  first-time visitor.
-- Healthy repetition is fine — note why it works instead of flagging it.
+**Rule:** same emotional stage + adjacent + no new info = flag for cut.
+**Exception:** healthy repetition works if it catches the visitor at a new
+decision stage or reinforces a conversion blocker — note why instead of flagging.
+
+- Identify sections that say the same thing (same stage, adjacent, no new info).
+- Identify lists or labels repeated verbatim; ask if they earn their place.
+- Flag defensive FAQs or edge-case answers that block no realistic visitor.
 
 ### Section Fit
 For each reviewed section, ask:
