@@ -64,3 +64,7 @@ Number findings from 1. One line per finding. Do not report what is fine.
 - Never change legal meaning or remove `human_` placeholders.
 - Trim suggestions are flags only — no edits.
 - Missing guide → [0] SKIPPED is valid; do not invent checks.
+- Skip a comment block (`<!-- confirm with lawyer: ... -->`, `<!-- fill: ... -->`,
+  etc.) only when the contiguous metadata comments immediately after it include
+  `<!-- risk-accepted: ... -->` or `<!-- resolved: ... -->` with a substantive
+  value other than `[pending]`.

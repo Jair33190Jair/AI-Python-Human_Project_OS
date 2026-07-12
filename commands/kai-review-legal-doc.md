@@ -59,3 +59,7 @@ Omit [5] row if neither `--pdf` nor `--visual-guide` was provided.
 - Trim suggestions are flags only — no edits.
 - Missing optional guide → SKIPPED is valid; do not invent checks.
 - Never claim [5] PASS without the PDF subagent having read every page.
+- Suppress a `<!-- confirm with lawyer: ... -->` finding only when the contiguous
+  metadata comments immediately after it include `<!-- risk-accepted: ... -->`
+  or `<!-- resolved: ... -->` with a substantive value other than `[pending]`.
+  Instruct subagents accordingly.

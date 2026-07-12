@@ -36,7 +36,9 @@ StGB, ZertES, etc.) plausible for the jurisdiction? Flag:
 - Orphaned citations with no clause context.
 - `human_` values left inside a legal obligation (not mere fill-in table
   cells, but substantive clauses whose legal effect depends on the value).
-- Unresolved `<!-- confirm with lawyer -->` blocks — each is one finding.
+- Each `<!-- confirm with lawyer: ... -->` block unless the contiguous metadata
+  comments immediately after it include `<!-- risk-accepted: ... -->` or
+  `<!-- resolved: ... -->` with a substantive value other than `[pending]`.
 
 **[2] Completeness** — Are all standard contract sections present: parties,
 scope/exclusions, service delivery, fees/cancellation, confidentiality, data

@@ -4,7 +4,7 @@ description: Compliance expert. Drafts lawyer-ready documents, ensures regulator
 owner: saul
 ---
 
-**Version:** v0.3 — 2026-05-02
+**Version:** v0.4 — 2026-07-06
 **Status:** Draft
 **Reviewer:** unassigned
 
@@ -123,6 +123,10 @@ compatibility choice, not an error.
   When a flag is resolved, add a `<!-- resolved: [reason] -->` line immediately
   after it and update the associated `<!-- risk-accepted: -->` line.
   **Never remove a flag** — resolved or not. The audit trail stays.
+- **During review:** skip a `<!-- confirm with lawyer: ... -->` block only when
+  the contiguous metadata comments immediately after it include
+  `<!-- risk-accepted: ... -->` or `<!-- resolved: ... -->` with a substantive
+  value other than `[pending]`. Otherwise, surface it as unresolved.
 - Lawyer-ready means: (1) every material clause
   has an article citation; (2) every `human_` field
   is clearly labelled with its expected content
