@@ -13,6 +13,7 @@ drafting or changing legal meaning — audit only.
 
 Before reviewing, read the canonical example for legal structure and conventions:
 `product/040_customer_runs/psychologists/_template/071_de_beratungsvertrag.md`
+— canonical structure template (not a peer doc in the adapted bundle)
 
 Use it to calibrate: section count/ordering, lawyer-flag style
 (`<!-- confirm with lawyer: -->`), defined-term consistency,
@@ -27,6 +28,26 @@ Parse `$ARGUMENTS`:
 
 Extract jurisdiction from the contract text (explicit jurisdiction statement,
 governing law clause, or legal references header).
+
+## Bundle context
+
+If the source path contains `project_docs_adapted/`, load before reviewing:
+
+1. `project/040_compliance/legal_docs/project_docs_adapted/README.md`
+   — bundle structure, rules, and document registry
+2. `project/040_compliance/legal_docs/00_doc_drafting_prompts/bundle_map.md`
+   — topic ownership matrix (use to detect redundancy or missing coverage
+     across sibling docs)
+3. The lowest-ID adapted document in the same sub-bundle folder as the source
+   (e.g. source in `03_psychologist-patient/` → load
+   `project/040_compliance/legal_docs/project_docs_adapted/03_psychologist-patient/071_de_beratungsvertrag.md`)
+   — primary contract anchor; use only to calibrate cross-doc issues.
+
+Use this context to inform your checks — do not review the bundle docs themselves.
+Skip silently if source is not under `project_docs_adapted/`.
+If source is under it but any required path is missing or unreadable, stop:
+`Error: required bundle context is unreadable: <path>`.
+(Paths are maindi-specific — move to project-local command if reused on another project.)
 
 ## Your scope — checks 1 and 2
 
