@@ -54,7 +54,8 @@ If source is under it but any required path is missing or unreadable, stop:
 
 **[3] Grammar + typos** — Grammar correctness, capitalisation, gendering style,
 and typographical errors. Do not flag legal citations or `human_` placeholders
-as grammar issues.
+as grammar issues. Also flag: any inline "Anhang X" reference (with or without
+surrounding document name) in body text that is not wrapped in `**bold**`.
 
 **[4] Trim** — Flag any clause, sentence, or table cell with no unique legal or
 practical meaning. One line per candidate. Never flag `human_` placeholders or
