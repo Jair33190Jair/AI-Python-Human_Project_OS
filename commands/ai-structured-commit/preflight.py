@@ -58,7 +58,6 @@ def build_payload(args: argparse.Namespace) -> dict:
     root = find_repo_root(resolved_path, blocked)
 
     diff: list[str] = []
-    planning_file = None
     task_queue = None
     hook = None
 
@@ -68,7 +67,6 @@ def build_payload(args: argparse.Namespace) -> dict:
         if not diff:
             blocked.append("no pending changes — nothing to split")
 
-        planning_file = find_first_existing(root, ("commit_guideline.md",))
         task_queue = find_first_existing(
             root, ("dev_tasks_open.md", "tasks_open.md")
         )
@@ -79,8 +77,6 @@ def build_payload(args: argparse.Namespace) -> dict:
         "repo_root": str(root) if root else None,
         "diff_entry_count": len(diff),
         "diff": diff,
-        "planning_file": planning_file,
-        "planning_file_exists": planning_file is not None,
         "task_queue": task_queue,
         "task_queue_exists": task_queue is not None,
         "pre_commit_hook": hook,

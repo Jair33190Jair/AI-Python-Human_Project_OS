@@ -32,20 +32,13 @@ python3 ~/.claude/commands/ai-structured-commit/preflight.py $ARGUMENTS
 ```
 
 Use its JSON output for the repo root, the diff snapshot
-(`diff`/`diff_entry_count`), whether a planning file and task queue
-already exist, and whether a pre-commit hook is present. Stop on
-`status: blocked` and print its `blocked` reasons.
+(`diff`/`diff_entry_count`), whether the task queue already exists,
+and whether a pre-commit hook is present. Stop on `status: blocked`
+and print its `blocked` reasons.
 
 This diff snapshot is the plan's baseline — if it changes later (see
 "Handling a moving target"), rerun preflight rather than trusting a
 stale list.
-
-If `planning_file_exists` is false, create `commit_guideline.md` at
-the repo root. This file is the durable, human-readable record of the
-split — chunk list, include lists, why each chunk is separate, check
-commands, and what was actually verified. Update it continuously as
-chunks are defined, checked, and committed — never let it go stale
-while chunks are still being worked.
 
 If `task_queue_exists` is false, create `dev_tasks_open.md` at the
 repo root with a minimal header, before the first chunk that needs to
@@ -66,10 +59,13 @@ decision → data model → backend contract → backend implementation →
 backend tests → minimal UI → end-to-end check → infra/deploy →
 compliance documents → public copy.
 
-Write the full chunk breakdown to the planning file before starting
-the per-chunk loop, and show it to the user. Get agreement on the
-shape of the split before diving into individual gates — replanning
-after gate 3 of chunk 1 wastes both your time.
+Track the chunk breakdown with `TodoWrite` — one todo per chunk,
+marked `in_progress`/`completed` as the loop advances. This is
+session-scoped tracking, not a repo artifact: nothing to create,
+maintain, or clean up afterward. Show the full breakdown to the user
+before starting the per-chunk loop. Get agreement on the shape of the
+split before diving into individual gates — replanning after gate 3
+of chunk 1 wastes both your time.
 
 If a file's diff contains two hunks that logically belong to
 different chunks (e.g. one hunk fixes a typo, another documents a new
@@ -107,8 +103,7 @@ as "fix later."
    (not just its one-line summary) states what's actually in the
    chunk and why it was necessary. This is the durable change record
    — no separate report file. `git log` / `git show <sha>` is the
-   audit trail; keep it complete enough to read on its own, without
-   the planning file open alongside it.
+   audit trail; keep it complete enough to read on its own.
 7. **You always know what's going on** — nothing is staged or
    committed until the user has seen the include list, the
    explanation, and the check output.
@@ -124,7 +119,7 @@ as "fix later."
 Repeat for every chunk, in dependency order:
 
 1. Show the chunk's include list and its "what's actually in this
-   chunk" / "why separate" explanation from the planning file.
+   chunk" / "why separate" explanation.
 2. Run gates 1, 3, 4, 5, 8, 9 by reading the actual files — fix any
    finding before running checks, not after.
 3. Run the chunk's real check command — actually execute it. If a
@@ -167,30 +162,28 @@ Repeat for every chunk, in dependency order:
    obtain) into the project's task queue — addressed to whichever
    person or agent actually needs to act, not only to a dev agent.
    Never do the deferred work now, and never leave it undiscoverable.
-10. Update the planning file with what was checked and verified for
-    this chunk.
-11. Present the final include list, explanation, and check output.
+10. Present the final include list, explanation, and check output.
     Ask for explicit go/no-go before staging anything.
-12. On go, stage **exactly** this chunk's file list — never `git add
+11. On go, stage **exactly** this chunk's file list — never `git add
     -A`, never a broad glob. Verify the staged set matches the
     intended list exactly (`git status --porcelain` filtered to
     staged entries, or `git diff --cached --stat`) before committing.
     If the staged set doesn't match, diagnose why (a stale index,
     leftover staged content from before this session) before
     proceeding — never commit an unexplained diff.
-13. Commit with a full message: a short subject plus a body stating
+12. Commit with a full message: a short subject plus a body stating
     what changed and why, per gate 6.
-14. Move to the next chunk.
+13. Move to the next chunk.
 
 ## Handling a moving target
 
 If the worktree changes during the session (parallel edits by the
 user, another process, or a prior automated run), stop and re-survey
 the diff rather than continuing to review against a stale snapshot.
-Update the planning file to match the new reality before resuming the
-loop. If a commit already landed outside this session covering part
-of the plan, acknowledge it explicitly and adjust the remaining chunk
-plan instead of ignoring it or re-doing it.
+Update the `TodoWrite` chunk list to match the new reality before
+resuming the loop. If a commit already landed outside this session
+covering part of the plan, acknowledge it explicitly and adjust the
+remaining chunk plan instead of ignoring it or re-doing it.
 
 ## Output
 
