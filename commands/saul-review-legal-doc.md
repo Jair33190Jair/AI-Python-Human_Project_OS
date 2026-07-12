@@ -23,6 +23,7 @@ cross-reference pattern, and YAML frontmatter conventions.
 Parse `$ARGUMENTS`:
 
 - `source` — required; read the full Markdown file.
+  If source is missing or unreadable, stop: `Error: <source.md> is required.`
 
 Extract jurisdiction from the contract text (explicit jurisdiction statement,
 governing law clause, or legal references header).

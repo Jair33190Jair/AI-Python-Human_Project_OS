@@ -15,6 +15,7 @@ Anchor: `$ARGUMENTS` — one Markdown contract plus optional flags.
 Parse `$ARGUMENTS`:
 
 - `source` — required Markdown contract.
+  If source is missing, stop: `Error: <source.md> is required.`
 - `--written-guide` — optional; passed to Steve.
 - `--pdf` — optional; triggers visual check if also `--visual-guide` present.
 - `--visual-guide` — optional; triggers visual check if also `--pdf` present.

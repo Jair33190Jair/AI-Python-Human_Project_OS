@@ -22,6 +22,7 @@ section naming, defined-term style, and tone — not as a template to copy.
 Parse `$ARGUMENTS`:
 
 - `source` — required; read the full Markdown file.
+  If source is missing or unreadable, stop: `Error: <source.md> is required.`
 - `--written-guide` — optional brand voice guide; skip [0] with note if absent.
 
 ## Your scope — checks 0, 3, and 4
