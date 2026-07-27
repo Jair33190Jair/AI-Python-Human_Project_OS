@@ -55,6 +55,21 @@ that fully solves the problem. Nothing extra.
 
 ## Engineering Quality
 
+- Put a provider behind an adapter (shared interface,
+  one file per implementation, thin dispatcher by config)
+  only when a concrete swap requirement is already
+  documented — a stated mock/demo mode, a named second
+  provider, a planned migration. Not for "might swap this
+  someday": that's Leo's minimalism call to make, not a
+  default. If unsure whether a requirement is concrete
+  enough, ask Leo rather than deciding alone.
+- Name functions with the verb that matches what they
+  actually do and give back to the caller — not the literal
+  transport mechanism underneath. Prefer the name that stays
+  consistent with the domain vocabulary already used around
+  it (status fields, error types, audit events) over a
+  technically-also-true alternative that would clash with
+  that vocabulary.
 - Write code that explains itself. Comment intent,
   constraints, and surprises — not ordinary mechanics.
 - Test important behavior, edge cases, and failure paths.
