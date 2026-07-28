@@ -15,6 +15,12 @@ Findings only. Do not edit or queue tasks.
 
 ## Resolve
 
+If `$ARGUMENTS` is empty, stop:
+
+```text
+Blocked: no path provided — pass a .py path.
+```
+
 Expand `$ARGUMENTS` to an absolute path.
 If the file does not exist or is not a `.py` file, stop:
 
@@ -23,6 +29,16 @@ Blocked: not a Python file — pass a .py path.
 ```
 
 Read the file in full.
+
+Run the R6 pre-pass:
+
+```bash
+python3 ~/.claude/commands/bob-review-script/dead_code_check.py "$ANCHOR"
+```
+
+Use its output as a starting list of unused-import findings for R6;
+still read the file for the rest of R1–R7 and for unused
+variables/branches dead_code_check.py doesn't cover.
 
 ## Review criteria
 
