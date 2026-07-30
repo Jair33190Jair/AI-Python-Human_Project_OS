@@ -76,8 +76,9 @@ the whole file into one chunk or the other.
 ## The nine gates
 
 Apply all nine to every chunk before it is staged. If a gate fails,
-fix it in that chunk before moving on — never carry a failure forward
-as "fix later."
+propose the specific fix to the user and get explicit approval before
+applying it — never apply a gate fix autonomously, and never carry a
+failure forward as "fix later."
 
 1. **File-purpose comment** — every new or modified file in the
    chunk carries a short one-line purpose comment/docstring at its
@@ -121,8 +122,11 @@ Repeat for every chunk, in dependency order:
 
 1. Show the chunk's include list and its "what's actually in this
    chunk" / "why separate" explanation.
-2. Run gates 1, 3, 4, 5, 8, 9 by reading the actual files — fix any
-   finding before running checks, not after.
+2. Run gates 1, 3, 4, 5, 8, 9 by reading the actual files. For any
+   finding, propose the fix to the user and get explicit go-ahead
+   before applying it — do not fix autonomously. Only move to checks
+   once every finding in this chunk is either approved-and-applied or
+   explicitly waved off by the user.
 3. Run the chunk's real check command — actually execute it. If a
    tool seems unavailable (interpreter not on `PATH`, package missing,
    credential helper broken), look for a scoped workaround (source a
@@ -176,13 +180,28 @@ Repeat for every chunk, in dependency order:
 
 ## Handling a moving target
 
-If the worktree changes during the session (parallel edits by the
-user, another process, or a prior automated run), stop and re-survey
-the diff rather than continuing to review against a stale snapshot.
-Update the `TodoWrite` chunk list to match the new reality before
-resuming the loop. If a commit already landed outside this session
-covering part of the plan, acknowledge it explicitly and adjust the
-remaining chunk plan instead of ignoring it or re-doing it.
+The file scope is frozen to the initial preflight diff snapshot — work
+in parallel with the user and other sessions rather than trying to
+absorb everything moving in the worktree.
+
+- **Files not in the original snapshot** (new files, or files nothing
+  in the snapshot referenced) that appear mid-session belong to
+  whoever is producing them. Leave them unstaged and out of every
+  chunk; don't pull them in, don't ask about deleting them — just
+  acknowledge them to the user and note them under "Remaining
+  unstaged" in the final output.
+- **Files already in the snapshot** that change further mid-session
+  (parallel edits by the user, another process, or a prior automated
+  run) do need reconciling: stop, re-diff just those specific files
+  against the current worktree, and adjust the affected chunk(s)
+  accordingly. Don't expand into files outside the original snapshot
+  to do this.
+- If a commit already landed outside this session covering part of
+  the plan, acknowledge it explicitly and adjust the remaining chunk
+  plan instead of ignoring it or re-doing it.
+
+Update the `TodoWrite` chunk list to match reality before resuming the
+loop.
 
 ## Output
 
