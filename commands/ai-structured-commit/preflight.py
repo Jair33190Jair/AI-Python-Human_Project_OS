@@ -7,10 +7,49 @@ import json
 import subprocess
 from pathlib import Path
 
+TASK_QUEUE_TEMPLATE = """---
+owner: kai
+---
+
+# Cross-agent todos queue
+
+Async inbox for handoffs between agents.
+Newest on top. Done/obsolete → `dev_tasks_closed.md`.
+
+### Schema
+
+```
+## TASK-NNNN — <short title>
+- Date: MM-YY
+- Requested by: <agent or "user">
+- Target agent: <agent>
+- What: <one sentence; link to file if detail lives there>
+- Status: open
+- Tag: <optional>
+- Depends on: <optional>
+```
+
+### Status
+
+`open` · `done` · `obsolete`
+"""
+
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument("repo_path", nargs="?", default=".", type=Path)
+    parser.add_argument(
+        "--init-task-queue",
+        action="store_true",
+        help="create dev_tasks_open.md at the repo root if it doesn't exist",
+    )
+    parser.add_argument(
+        "--verify-staged",
+        nargs="*",
+        default=None,
+        metavar="FILE",
+        help="expected staged file list; exit non-zero on any mismatch",
+    )
     return parser.parse_args()
 
 
@@ -52,6 +91,29 @@ def find_first_existing(root: Path, names: tuple[str, ...]) -> str | None:
     return None
 
 
+def init_task_queue(root: Path, task_queue: str | None) -> str:
+    if task_queue is not None:
+        return task_queue
+    path = root / "dev_tasks_open.md"
+    path.write_text(TASK_QUEUE_TEMPLATE)
+    return str(path)
+
+
+def verify_staged(root: Path, expected: list[str]) -> dict:
+    code, out = run(["git", "diff", "--cached", "--name-only"], cwd=root)
+    actual = sorted(line for line in out.splitlines() if line.strip())
+    expected_sorted = sorted(expected)
+    missing = sorted(set(expected_sorted) - set(actual))
+    unexpected = sorted(set(actual) - set(expected_sorted))
+    return {
+        "status": "match" if not missing and not unexpected else "mismatch",
+        "expected": expected_sorted,
+        "actual": actual,
+        "missing": missing,
+        "unexpected": unexpected,
+    }
+
+
 def build_payload(args: argparse.Namespace) -> dict:
     blocked: list[str] = []
     resolved_path = args.repo_path.resolve()
@@ -70,6 +132,8 @@ def build_payload(args: argparse.Namespace) -> dict:
         task_queue = find_first_existing(
             root, ("dev_tasks_open.md", "tasks_open.md")
         )
+        if args.init_task_queue:
+            task_queue = init_task_queue(root, task_queue)
         hook = find_pre_commit_hook(root)
 
     return {
@@ -85,7 +149,20 @@ def build_payload(args: argparse.Namespace) -> dict:
 
 
 def main() -> int:
-    payload = build_payload(parse_args())
+    args = parse_args()
+
+    if args.verify_staged is not None:
+        resolved_path = args.repo_path.resolve()
+        blocked: list[str] = []
+        root = find_repo_root(resolved_path, blocked)
+        if root is None:
+            print(json.dumps({"status": "blocked", "blocked": blocked}, indent=2))
+            return 2
+        result = verify_staged(root, args.verify_staged)
+        print(json.dumps(result, indent=2))
+        return 0 if result["status"] == "match" else 2
+
+    payload = build_payload(args)
     print(json.dumps(payload, indent=2))
     return 2 if payload["blocked"] else 0
 

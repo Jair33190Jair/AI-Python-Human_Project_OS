@@ -40,9 +40,10 @@ This diff snapshot is the plan's baseline — if it changes later (see
 "Handling a moving target"), rerun preflight rather than trusting a
 stale list.
 
-If `task_queue_exists` is false, create `dev_tasks_open.md` at the
-repo root with a minimal header, before the first chunk that needs to
-file something into it.
+If `task_queue_exists` is false, run
+`python3 ~/.claude/commands/ai-structured-commit/preflight.py $ARGUMENTS --init-task-queue`
+before the first chunk that needs to file something into it — it
+writes the standard schema block, not a freehand header.
 
 ## Plan the split
 
@@ -54,7 +55,7 @@ too big — split it further.
 Order chunks by dependency, not by file type alone — a chunk that
 calls code another chunk introduces must land after it. When there's
 no clear dependency from the diff itself, default to Steve's build
-order (`product/010_agents/010_strategy_steve/steve.md`): product
+order (`~/.claude/product/010_agents/010_strategy_steve/steve.md`): product
 decision → data model → backend contract → backend implementation →
 backend tests → minimal UI → end-to-end check → infra/deploy →
 compliance documents → public copy.
@@ -134,12 +135,10 @@ Repeat for every chunk, in dependency order:
    run from a subdirectory versus from the repo root, a test command
    that excludes a folder CI includes). If so, run the broader scope
    too — the gap is exactly where regressions hide.
-5. Prefer verifying by actually running the change end-to-end (a real
-   migration against a disposable database, a real CLI invocation, a
-   real build) over trusting existing unit tests alone, especially for
-   migrations, CLI wiring, and anything path- or filename-dependent.
-   Unit tests with synthetic fixtures can pass while the real
-   invocation path is broken — check both.
+5. Prefer running the change end-to-end (real migration, CLI call, or
+   build) over unit tests alone for migrations, CLI wiring, and
+   path-dependent code — synthetic fixtures can pass while the real
+   path is broken.
 6. If this surfaces test/code drift (the code changed and its tests
    didn't, or vice versa), do not silently pick a side. Determine
    which one is stale, confirm the intended behavior with the user,
@@ -165,12 +164,12 @@ Repeat for every chunk, in dependency order:
 10. Present the final include list, explanation, and check output.
     Ask for explicit go/no-go before staging anything.
 11. On go, stage **exactly** this chunk's file list — never `git add
-    -A`, never a broad glob. Verify the staged set matches the
-    intended list exactly (`git status --porcelain` filtered to
-    staged entries, or `git diff --cached --stat`) before committing.
-    If the staged set doesn't match, diagnose why (a stale index,
-    leftover staged content from before this session) before
-    proceeding — never commit an unexplained diff.
+    -A`, never a broad glob. Run
+    `python3 ~/.claude/commands/ai-structured-commit/preflight.py $ARGUMENTS --verify-staged <file1> <file2> ...`
+    with the intended list; it exits non-zero on any mismatch. If it
+    reports a mismatch, diagnose why (a stale index, leftover staged
+    content from before this session) before proceeding — never
+    commit an unexplained diff.
 12. Commit with a full message: a short subject plus a body stating
     what changed and why, per gate 6.
 13. Move to the next chunk.
