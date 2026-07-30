@@ -141,6 +141,17 @@ cost accumulates.
 Severity: Med for one step; High if most of the skill could be
 scripted.
 
+**S13 — Granularity**  
+Must justify the anchor as a standalone command (not trivial
+enough to fold into an existing instruction) and confirm its
+scope is small enough to complete in one clean pass without
+hallucination. If too large, require a linked command workflow
+instead of one oversized command.  
+Fail: task is trivial and doesn't warrant a dedicated command,
+or task is too large for reliable single-pass execution with no
+workflow decomposition.  
+Severity: Med.
+
 ## Metrics
 
 Labels are grounded in observed facts; do not estimate.

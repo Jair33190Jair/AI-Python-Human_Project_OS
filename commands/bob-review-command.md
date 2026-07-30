@@ -9,10 +9,10 @@ You are running a **skill-review** audit.
 
 Anchor: `$ARGUMENTS` — a skill or slash command file or folder.
 
-Findings only. Do not edit or queue tasks.
+Findings only.
 
 If the decision is `Recreate`, ask whether to run
-`/ai-create-command` with the complete review output.
+`/bob-create-command` with the complete review output.
 
 ---
 
@@ -68,12 +68,12 @@ paste/write instructions that need human interpretation.
 ## Checks
 
 Read `~/.claude/commands/bob-review-command/rubric.md`
-and run S1–S12 from it.
+and run S1–S13 from it.
 Skip checks that pass cleanly.
 
 Record:
 
-- S1–S11: `check | finding | severity | location | suggested fix`
+- S1–S11, S13: `check | finding | severity | location | suggested fix`
 - S12: `step | effort | frequency | impact | verdict`
 
 **Suggested fix must be diff-precise**: exact text to add,
@@ -100,7 +100,8 @@ Choose `Recreate` when targeted edits would preserve a bad
 structure instead of fixing the asset.
 
 If the decision is `Recreate`, say whether the next step is
-answering focused AI questions or drafting from existing sources.
+answering focused AI questions or drafting from existing sources,
+and that it would run via `/bob-create-command`.
 This sentence must be inside the decision line.
 
 Decision schema:
@@ -128,11 +129,18 @@ If `--with-scripts` was set, load and execute
 
 ## Final Validation
 
-Before emitting, verify: table schema, exact decision label,
-conditional S12, rubric metrics, preflight coverage, handoff
-prompt when required, and workflow contract compliance.
+Before emitting, write the drafted report to a temp file and run:
 
-If validation fails, fix the output before responding.
+```bash
+python3 ~/.claude/commands/bob-review-command/validate_output.py "$DRAFT"
+```
+
+It checks table headers, decision-label format, metrics format, and
+the Recreate handoff prompt. If it prints `FAIL:` lines, fix the
+output and rerun before responding.
+
+Also verify by hand: preflight coverage and workflow contract
+compliance (these are not scripted).
 
 Hard rules:
 
