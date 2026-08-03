@@ -71,6 +71,10 @@ Read `~/.claude/commands/bob-review-command/rubric.md`
 and run S1–S13 from it.
 Skip checks that pass cleanly.
 
+For S4, review the anchor and its support files as one asset. Propose a compact
+replacement when sections can be merged; do not limit findings to visibly long
+sentences.
+
 Record:
 
 - S1–S11, S13: `check | finding | severity | location | suggested fix`

@@ -162,9 +162,8 @@ Required structure:
 - output rules;
 - hard rules.
 
-Keep the command short enough to review easily. Put long examples,
-optional variants, or deterministic checks in support files only
-when they change execution.
+Before review, apply the preamble's Instruction Minimalism gate to the complete
+draft and its support files.
 
 Prefer one command file. Add support scripts only when the step is
 deterministic, repeated, and safer as code than prose.

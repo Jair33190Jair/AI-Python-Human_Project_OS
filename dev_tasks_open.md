@@ -207,6 +207,9 @@ printf '\nDone: %d file(s) renamed, %d file(s) updated.\n' "$FILES_RENAMED" "$FI
   in the anchor body. Acceptance: re-running `/bob-review-command` on
   a freshly rewritten target three times yields "No change" each
   time.
+- Progress (2026-08-03): Kai added shared instruction-minimalism gates,
+  strengthened whole-asset compression in S4 and `/ai-review-agent`, and
+  aligned `/bob-create-command`. Script-depth and convergence work remains.
 - Status: open
 - Tag: tooling, reviewer
 - Depends on: —
@@ -250,4 +253,3 @@ printf '\nDone: %d file(s) renamed, %d file(s) updated.\n' "$FILES_RENAMED" "$FI
 - Target agent: kai
 - What: Define how Kai discovers projects and their agents at session start — no registry, no agent self-registration. Two parts: (1) document where projects live (known root: `~/dev/projects/`); (2) define the glob pattern that finds project agents by convention (e.g. `~/dev/projects/**/ai_project_agent_*.md`). Deliverable: short rule added to CLAUDE.md covering project root(s) and agent discovery pattern.
 - Status: open
-

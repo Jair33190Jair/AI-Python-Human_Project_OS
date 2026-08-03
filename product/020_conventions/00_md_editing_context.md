@@ -113,11 +113,13 @@ agent invocations, and task references.
 
 Run after every markdown write or edit.
 
-1. Does each sentence add unique information?
-2. Is this already stated or linked elsewhere?
-3. Can two headings, bullets, or steps become one?
-4. Can an example be removed without losing clarity?
-5. Did the edit add a new abstraction or layer?
+1. Does each sentence change a trigger, input, action, decision, output,
+   validation, or safety boundary?
+2. Can a rule or section be shorter without becoming ambiguous?
+3. Is it already stated or linked elsewhere?
+4. Can headings, bullets, steps, or examples be merged or removed?
+5. Did the edit add an unnecessary abstraction or layer?
 
-Trim unless removing a safety/legal/security constraint,
-a source or ownership marker, or a decision needed downstream.
+The target is the shortest unambiguous contract. Trim unless removing a
+safety/legal/security constraint, a source or ownership marker, or a decision
+needed downstream.

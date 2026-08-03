@@ -33,7 +33,7 @@ Store both lists separately.
 
 ---
 
-## Phase 2 — Run 7 checks
+## Phase 2 — Run 8 checks
 
 Run every check. Record finding | severity (High/Med/Low) | file | suggested fix.
 If a check passes cleanly, do not include it in the output.
@@ -60,17 +60,28 @@ Fail = flag with no question after the colon (blank or whitespace only). Severit
 Check that every file in the session chain has `owner:` in its frontmatter.
 Fail = missing field. Severity: Low.
 
-**C6 — Minimalism: no cross-layer duplication**
-Read each file in the session chain.
-Flag any rule, sentence, or section that restates something
-already defined in a higher-layer file (global CLAUDE.md, core agent, conventions).
-Severity: Low. Requires judgment — only flag clear restatements, not extensions.
+**C6 — Instruction efficiency**
+Review the whole anchor, not only isolated sentences. Flag:
 
-**C7 — Dead task references**
+- internal repetition or overlapping sections;
+- rationale or examples that do not change behaviour;
+- rules that can be shorter without becoming ambiguous;
+- headings, abstractions, or support files that do not help execution.
+
+Severity: Low; Med when verbosity hides priorities or changes execution.
+
+**C7 — No cross-layer duplication**
+Flag rules already defined in global `CLAUDE.md`, the core agent, or loaded
+conventions. Do not flag genuine extensions. Severity: Low.
+
+**C8 — Dead task references**
 `grep` for every `TASK-NNNN` reference in the anchor file.
 For each referenced TASK-ID, verify it appears in either
 `dev_tasks_open.md` or `dev_tasks_closed.md` in the project.
 Fail = ID not found in either file. Severity: Med.
+
+Suggested fixes for C6 and C7 must name the exact section to remove, merge, or
+replace. Prefer one coherent replacement over many line edits.
 
 ---
 

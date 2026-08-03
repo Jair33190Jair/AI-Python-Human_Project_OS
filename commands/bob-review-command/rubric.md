@@ -41,20 +41,16 @@ discarded source warnings that the schema can preserve.
 Severity: High.
 
 **S4 — Minimalism / prose clarity / simplicity**  
-Flag generic advice, repeated principles, long examples,
-overbuilt workflows, needless abstraction, or support files that
-do not change execution.
+Review the whole asset for behavioural compression, not only long paragraphs.
+The target is the shortest unambiguous contract.
 
-Ask whether the same skill could run with fewer steps, fewer
-loaded files, fewer concepts, or a smaller output contract without
-losing required behavior.
+Every sentence must change a trigger, input, action, decision, output,
+validation, or safety boundary. Flag mergeable sections, repeated rationale,
+unnecessary examples, overbuilt workflows, and support files that do not
+change execution.
 
-Paragraphs must be short, direct, and necessary. Sentences must be
-clear, complete, and specific enough to execute.
-
-Fail: bloated paragraph, vague wording, filler, sentence fragment,
-unnecessary explanation, or wording that hides the action the AI
-must take.  
+Fail: the same behaviour can be expressed materially shorter; vague wording,
+filler, or brevity hides the required action.
 Severity: Low; Med if unclear prose changes execution.
 
 **S5 — No redundancy / contradiction**  
