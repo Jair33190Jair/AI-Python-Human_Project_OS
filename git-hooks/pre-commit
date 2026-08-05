@@ -1,2 +1,22 @@
 #!/usr/bin/env bash
-exec bash ~/.claude/git-hooks/check-references.sh --cached "$@"
+set -euo pipefail
+
+bash "$HOME/.claude/git-hooks/check-references.sh" --cached "$@"
+
+repo_root="$(git rev-parse --show-toplevel 2>/dev/null)" || exit 0
+config="$repo_root/.pre-commit-config.yaml"
+
+# Repositories without pre-commit configuration keep the existing behavior.
+[[ -f "$config" ]] || exit 0
+
+if [[ -x "$repo_root/.venv/bin/pre-commit" ]]; then
+  pre_commit="$repo_root/.venv/bin/pre-commit"
+elif command -v pre-commit >/dev/null 2>&1; then
+  pre_commit="$(command -v pre-commit)"
+else
+  printf 'Pre-commit configuration found, but pre-commit is not installed.\n' >&2
+  exit 1
+fi
+
+cd "$repo_root"
+exec "$pre_commit" run --hook-stage pre-commit

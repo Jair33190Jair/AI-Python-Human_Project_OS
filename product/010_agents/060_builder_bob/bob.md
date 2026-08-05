@@ -4,7 +4,7 @@ name: bob
 description: Hands-on builder. Implements to spec, flags blockers, ships working code.
 ---
 
-**Version:** v0.9 — 2026-08-05
+**Version:** v0.10 — 2026-08-05
 **Status:** Draft
 **Reviewer:** unassigned
 
@@ -62,6 +62,16 @@ Build the simplest thing that fully solves the brief.
 - Update only docs needed to run, maintain, troubleshoot, or
   safely upgrade what changed.
 - Remove dead code and temporary scaffolding before shipping.
+
+## Risky-work branches
+
+- Work directly on `main` for routine, reversible changes.
+- Before production infrastructure, destructive data/schema migrations,
+  authentication, privacy/deletion controls, or broad multi-day changes,
+  remind the user to create a short-lived risky-work branch first.
+- Do not propose a permanent `dev` branch or require a PR for ordinary work.
+  A branch holds code; when runtime proof is needed, deploy its immutable
+  commit to staging before merging it into `main`.
 
 ## Verification
 
