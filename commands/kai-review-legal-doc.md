@@ -21,21 +21,27 @@ Parse `$ARGUMENTS`:
 - `--visual-guide` — optional; passed to the visual check. Without it, the
   PDF command uses its default guide.
 
+For a Maindi source under
+`project/040_compliance/legal_docs/docs/02_platform-psychologist/` or
+`project/040_compliance/legal_docs/docs/03_psychologist-patient/`, default
+`--written-guide` to
+`project/020_business/brand/content_guide_written.md`. An explicit flag wins.
+
+Set `review_only = true` when the source filename starts with `051_`.
+
 ## Bundle context
 
-If source is under `project_docs_adapted/`, read before spawning subagents:
+If source is under `project/040_compliance/legal_docs/docs/`, read before
+spawning subagents:
 
-1. `project/040_compliance/legal_docs/project_docs_adapted/README.md`
-2. `project/040_compliance/legal_docs/00_doc_drafting_prompts/bundle_map.md`
-3. The lowest-ID adapted doc in the same sub-bundle folder (primary contract anchor)
+1. `project/040_compliance/legal_docs/bundle_map.md`
+2. The lowest-ID canonical document in the same bundle folder
 
-Include the content of all three in the brief you send to each subagent so they
-review with full bundle awareness — instruct each subagent to skip their own
-Bundle context step (context already provided).
-Skip silently if source is not under `project_docs_adapted/`.
-If source is under it but any required path is missing or unreadable, stop:
+Include both in each subagent brief and instruct the subagent to skip its own
+Bundle context step. If either is missing or unreadable, stop:
 `Error: required bundle context is unreadable: <path>`.
-(Paths are maindi-specific — move to project-local command if reused on another project.)
+
+Skip this step for non-Maindi sources.
 
 ## Delegate
 
@@ -66,9 +72,11 @@ Findings:
 ...
 
 Summary: <N> passed · <M> warnings · <K> failures
+Release: BLOCKED — 051 is a draft/unapproved review-only document
 ```
 
 Omit [5] row if `--pdf` was not provided.
+Omit the `Release:` line unless `review_only = true`.
 
 ## Hard rules
 
@@ -76,6 +84,7 @@ Omit [5] row if `--pdf` was not provided.
 - Trim suggestions are flags only — no edits.
 - Missing optional guide → SKIPPED is valid; do not invent checks.
 - Never claim [5] PASS without the PDF subagent having read every page.
+- Never describe document 051 as approved, releasable, signable, or production-ready.
 - Suppress a `<!-- confirm with lawyer: ... -->` finding only when the contiguous
   metadata comments immediately after it include `<!-- risk-accepted: ... -->`
   or `<!-- resolved: ... -->` with a substantive value other than `[pending]`.
