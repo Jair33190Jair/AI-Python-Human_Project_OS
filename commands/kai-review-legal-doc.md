@@ -45,10 +45,12 @@ Skip this step for non-Maindi sources.
 
 ## Delegate
 
-Read `~/.claude/commands/saul-review-legal-doc.md` and
+Read `~/.claude/product/010_agents/040_compliance_saul/saul.md` and
 `~/.claude/commands/steve-review-legal-doc.md`. Spawn Saul and Steve as
 subagents **in parallel**, briefing each with the full source text, their
-command spec, and the loaded bundle context content.
+spec (Saul: his agent profile and its Quality Gate; Steve: his command spec),
+and the loaded bundle context content. Instruct Saul's subagent to report
+checks [1] Legal refs and [2] Completeness in the output format below.
 
 If `--pdf` is provided, also spawn a third Steve subagent following
 `~/.claude/commands/steve-review-legal-pdf.md`.
