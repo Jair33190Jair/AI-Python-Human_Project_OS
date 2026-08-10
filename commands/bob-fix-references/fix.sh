@@ -38,8 +38,8 @@ else
     OLD_PATHS+=("$old")
     NEW_PATHS+=("$new")
   done < <(
-    { git diff --name-status HEAD 2>/dev/null
-      git diff --name-status --cached 2>/dev/null; } \
+    { git -c core.quotePath=false diff --name-status HEAD 2>/dev/null
+      git -c core.quotePath=false diff --name-status --cached 2>/dev/null; } \
     | awk -F'\t' '$1 ~ /^R/ { print $2"\t"$3 }' \
     | sort -u
   )
@@ -72,7 +72,10 @@ for i in "${!OLD_PATHS[@]}"; do
     grep -qI '' "$f" 2>/dev/null || continue  # skip binary
 
     BEFORE="$(md5sum "$f")"
-    sed -i "s|${OLD}|${NEW}|g" "$f"
+    OLD="$OLD" NEW="$NEW" perl -pi -e '
+      BEGIN { $o = quotemeta($ENV{OLD}); $n = $ENV{NEW}; }
+      s/$o/$n/g;
+    ' -- "$f"
     AFTER="$(md5sum "$f")"
 
     [[ "$BEFORE" != "$AFTER" ]] && {
