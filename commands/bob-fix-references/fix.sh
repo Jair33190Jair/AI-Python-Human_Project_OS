@@ -78,10 +78,11 @@ for i in "${!OLD_PATHS[@]}"; do
     ' -- "$f"
     AFTER="$(md5sum "$f")"
 
-    [[ "$BEFORE" != "$AFTER" ]] && {
+    if [[ "$BEFORE" != "$AFTER" ]]; then
+      git add -- "$f"
       printf '  refs: %s\n' "$f"
       (( FILES_UPDATED++ )) || true
-    }
+    fi
   done < <(git ls-files)
 done
 fi
