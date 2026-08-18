@@ -53,6 +53,34 @@ def _doc_title(tree) -> str:
     return _text(dt).strip() if dt is not None else "Unknown"
 
 
+def _render_item(item, indent: str = "   ") -> list[str]:
+    num_el = item.find(_q("num"))
+    num_t = _text(num_el).strip() if num_el is not None else ""
+    p_el = item.find(_q("p"))
+    p_t = _text(p_el).strip() if p_el is not None else ""
+    nested = item.find(_q("blockList"))
+
+    if p_t:
+        return [f"{indent}{num_t} {p_t}".rstrip()]
+
+    if nested is not None:
+        intro_el = nested.find(_q("listIntroduction"))
+        intro_t = _text(intro_el).strip() if intro_el is not None else ""
+        lines = [f"{indent}{num_t} {intro_t}".rstrip()]
+        sub_indent = indent + "   "
+        for sub_item in nested.findall(_q("item")):
+            lines.extend(_render_item(sub_item, sub_indent))
+        return lines
+
+    if num_t:
+        return [
+            f"{indent}{num_t} "
+            "[EXTRACTION GAP — no <p> or nested list found for this "
+            "item; verify against official source before use]"
+        ]
+    return []
+
+
 def _parse_content(content_el) -> list[str]:
     lines = []
     for child in content_el:
@@ -76,20 +104,7 @@ def _parse_content(content_el) -> list[str]:
                 if t:
                     lines.append(t)
             for item in child.findall(_q("item")):
-                num_el = item.find(_q("num"))
-                p_el = item.find(_q("p"))
-                num_t = (
-                    _text(num_el).strip()
-                    if num_el is not None else ""
-                )
-                p_t = (
-                    _text(p_el).strip()
-                    if p_el is not None else ""
-                )
-                if num_t or p_t:
-                    lines.append(
-                        f"   {num_t} {p_t}".rstrip()
-                    )
+                lines.extend(_render_item(item))
     return lines
 
 
@@ -101,12 +116,7 @@ def _parse_block_list(block_list_el) -> list[str]:
         if t:
             lines.append(t)
     for item in block_list_el.findall(_q("item")):
-        num_el = item.find(_q("num"))
-        p_el = item.find(_q("p"))
-        num_t = _text(num_el).strip() if num_el is not None else ""
-        p_t = _text(p_el).strip() if p_el is not None else ""
-        if num_t or p_t:
-            lines.append(f"   {num_t} {p_t}".rstrip())
+        lines.extend(_render_item(item))
     return lines
 
 

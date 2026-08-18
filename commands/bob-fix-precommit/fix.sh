@@ -61,7 +61,12 @@ while (( pass <= MAX_PASSES )); do
   if [[ $STATUS -eq 0 ]]; then
     echo ""
     echo "All hooks passed."
-    exit 0
+    echo ""
+    echo "── reference check ──"
+    REF_OUT="$(bash ~/.claude/git-hooks/check-references.sh --worktree "$PWD" 2>&1)"
+    REF_STATUS=$?
+    echo "$REF_OUT"
+    exit "$REF_STATUS"
   fi
 
   # Safe auto-fix: genuinely empty (0-byte) files that check-json flagged.

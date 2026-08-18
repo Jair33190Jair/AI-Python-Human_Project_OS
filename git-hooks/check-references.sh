@@ -58,7 +58,7 @@ fi
 
 dead_refs=$(git ls-files \
   | grep -v 'dev_tasks_closed' \
-  | xargs grep -hEo '~/.claude/[^`" )]+' 2>/dev/null \
+  | xargs grep -hEo '~/.claude/[^`" ;,)]+' 2>/dev/null \
   | grep -vE '<|>|\[|\.\.\.' \
   | sort -u \
   | while read -r p; do
