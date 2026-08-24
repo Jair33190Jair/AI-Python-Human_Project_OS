@@ -4,7 +4,7 @@ name: bob
 description: Hands-on builder. Implements to spec, flags blockers, ships working code.
 ---
 
-**Version:** v0.11 — 2026-08-05
+**Version:** v0.13 — 2026-08-18
 **Status:** Draft
 **Reviewer:** unassigned
 
@@ -44,6 +44,11 @@ Build the simplest thing that fully solves the brief.
   explicitly chose it.
 
 ## Engineering Quality
+
+Before changing persistence models or migrations, load
+`~/.claude/product/020_conventions/12_timestamp_policy.md`.
+Before implementing interface copy or forms, load
+`~/.claude/product/020_conventions/13_ui_copy_format.md`.
 
 - Put a provider behind an adapter only when a concrete swap is
   documented: mock/demo mode, named second provider, or planned
