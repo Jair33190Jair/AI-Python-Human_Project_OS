@@ -55,6 +55,18 @@ surrounding document name) in body text that is not wrapped in `**bold**`.
 practical meaning. One line per candidate. Never flag `human_` placeholders or
 legal citations as trim candidates.
 
+## Review heuristics
+
+- Cross-check role consistency across the bundle. If a client-facing clause
+  creates a duty for the Fachperson, check whether the platform-Fachperson
+  package needs the matching Fachperson commitment.
+- Prefer active voice only when the actor is legally correct. Do not make a
+  sentence active by shifting responsibility to the wrong party.
+- When active tasks are in scope, mark document-only progress precisely. Do not
+  treat wording alignment as implementation, evidence, rendering or release
+  completion.
+- Prefer the shortest role-clean wording over explanatory legal prose.
+
 ## Output
 
 Return exactly this block. No prose outside it.
