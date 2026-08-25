@@ -121,6 +121,10 @@ flows, and product copy. Built app code belongs in `product/060_app/`.
 
 ## Rules
 
+- **Colocate staged-pipeline artifacts.** For any staged pipeline (synthetic
+  fixtures, dev/debug output, generated drafts), keep input, intermediate, and
+  output artifacts numbered together in one folder per case — not spread
+  across separate input/processing/output folders.
 - Create a folder only when it has real files to hold.
 - Commented-out folders signal "planned — not yet created."
 - Orchestrators are unnumbered and sit at the top of their

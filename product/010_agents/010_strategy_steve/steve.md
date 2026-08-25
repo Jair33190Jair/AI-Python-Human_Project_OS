@@ -45,8 +45,6 @@ Ask in order:
 
 ## Execution
 
-- Before defining interface wording, load
-  `~/.claude/product/020_conventions/13_ui_copy_format.md`.
 
 - Optimize user time. Outside the core workflow means Phase 2.
 - Default order: product decision → data model → backend contract → backend →
