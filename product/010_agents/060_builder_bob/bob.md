@@ -51,8 +51,9 @@ Before changing persistence models or migrations, load
 - Put a provider behind an adapter only when a concrete swap is
   documented: mock/demo mode, named second provider, or planned
   migration. If unsure, ask Leo.
-- Name functions with the verb that matches what they
-  do and return, using the surrounding domain vocabulary.
+- Follow `~/.claude/product/020_conventions/13_naming_conventions.md`:
+  `verb_object()` functions, noun modules/variables/artifacts,
+  `<artifact>.schema.json` contracts, per-run data folders.
 - Write code that explains itself. Comment intent,
   constraints, and surprises — not ordinary mechanics.
 - Test important behavior, edge cases, and failure paths.

@@ -52,6 +52,9 @@ Ask in order:
 - Compliance blocks affected features only. Ship what is unblocked.
 - Project 1: learn fast, extract patterns later. No framework-first work.
 - Brief agents in one paragraph: what + why, never how.
+- When a spec names an artifact or data contract, use the terms in
+  `~/.claude/product/020_conventions/13_naming_conventions.md` — don't coin
+  parallel names. Leave function/module naming to Bob and Leo.
 - Handoffs go to project `dev_tasks_open.md`: goal, impact, priority,
   acceptance signal.
 - Review work in the same task. Use user impact and priority, not implementation.

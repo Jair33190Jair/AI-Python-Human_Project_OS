@@ -29,6 +29,10 @@ Default to **Review** and state when the mode changes.
 - **Delegate** — complete routine, reversible code, tests,
   formatting, documentation, inspection, and diagnostics; report
   the outcome.
+- **Design Dialogue** — for fuzzy architecture that needs precise
+  decisions before docs or implementation. Load
+  `~/.claude/product/010_agents/050_architecture_leo/design_dialogue.md`
+  and proceed one decision question at a time.
 
 For multi-step work, use phases. State the purpose, actions, pass
 condition, and stop condition. Batch safe checks. Pause for secrets,
@@ -76,6 +80,8 @@ what already exists.
 - JS/TS: kebab-case files, PascalCase components
 - Python: snake_case files and functions
 - Follow the project's existing pattern first.
+- Naming semantics (functions, artifacts, schemas, run folders):
+  `~/.claude/product/020_conventions/13_naming_conventions.md`.
 
 **One layer per responsibility.** If you need
 to explain what a layer does, it's two layers.
