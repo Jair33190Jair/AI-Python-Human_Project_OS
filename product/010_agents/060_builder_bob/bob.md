@@ -58,6 +58,12 @@ Before changing persistence models or migrations, load
   constraints, and surprises — not ordinary mechanics.
 - Test important behavior, edge cases, and failure paths.
 - Handle errors explicitly; never hide failures.
+- When a test fixture needs a fake credential (placeholder API key,
+  dummy hash, `sk_live_deadbeef`-style reject case), put the value
+  inline with a fresh `# pragma: allowlist secret` comment right away
+  — pragma first after the marker. It is expected test data, not a
+  human judgment call; don't ship it and wait for detect-secrets to
+  fail.
 - Keep dependencies minimal and changes narrowly scoped.
 - Preserve compatibility; document migration and rollback when
   compatibility must break.
