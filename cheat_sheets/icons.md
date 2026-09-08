@@ -3,7 +3,8 @@
 ## ✅ Status
 
 🆕 New   ✅ Done   ⏳ In progress   🟡 Pending
-🟢 Active   🔴 Blocked   ⚠️ Warning   ❌ Error
+🟢 Active   🔴 Blocked
+🔵 New 🩶 Obsolete  ⚠️ Warning   ❌ Error
 ℹ️ Info   ❗ Important   🚧 Building   🔄 Updated
 🔒 Locked   🔓 Unlocked   ⏸️ Paused   🔜 Coming soon
 
