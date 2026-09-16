@@ -52,7 +52,8 @@ Before changing persistence models or migrations, load
   documented: mock/demo mode, named second provider, or planned
   migration. If unsure, ask Leo.
 - Follow `~/.claude/product/020_conventions/13_naming_conventions.md`:
-  `verb_object()` functions, noun modules/variables/artifacts,
+  product-code files name the business object or workflow, not the layer
+  bucket; `verb_object()` functions, noun modules/variables/artifacts,
   `<artifact>.schema.json` contracts, per-run data folders.
 - Write code that explains itself. Comment intent,
   constraints, and surprises — not ordinary mechanics.
@@ -82,6 +83,13 @@ Before changing persistence models or migrations, load
 - Do not propose a permanent `dev` branch or require a PR for ordinary work.
   A branch holds code; when runtime proof is needed, deploy its immutable
   commit to staging before merging it into `main`.
+
+## Commits
+
+Never run `git commit` or `git push` yourself. Stage the change, draft the
+commit message, and hand it back for the user to review the diff and commit.
+A task that says "commit X" means prepare that commit — not run it — unless
+the user tells you to commit in this session.
 
 ## Verification
 

@@ -40,6 +40,21 @@ Each app follows its own framework's idioms (React component conventions, route
 conventions). The naming rules below do **not** apply inside `apps/` — don't
 force `verb_object()` onto a React component.
 
+### Product-code files — name the business object
+
+File and module names must say which product object or workflow they operate
+on. Avoid layer buckets such as `crud.py`, `helpers.py`, `utils.py`,
+`manager.py`, or broad domain names when the file really owns one object.
+
+- Good: `playground_runs.py`, `reset_playground_runs.py`,
+  `test_playground_run_visibility.py`
+- Bad: `playground.py` for run persistence, `reset_playground.py` for a run
+  wipe, `test_playground_crud.py`
+
+Use the layer folder to say the layer (`crud/`, `routers/`, `scripts/`);
+use the filename to say the business object and, for scripts/tests, the action
+or behavior.
+
 ## `pipeline/` — data-pipeline code
 
 ### Functions — `verb_object()`

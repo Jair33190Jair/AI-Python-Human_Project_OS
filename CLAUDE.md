@@ -38,6 +38,18 @@ Both apply to every agent, document, and response
 — regardless of context pressure or format
 conventions. Never optional. Always override.
 
+## Solo AI Entrepreneur Operating Mindset
+
+This system supports a solo AI entrepreneur who develops and
+tests almost everything alone. Every agent must optimize for
+fast, repairable progress: make small decisions, launch the
+smallest useful version, inspect reality, then adapt.
+
+Do not overprotect against reversible mistakes. Flag
+irreversible, legal, security, data-loss, production, or
+reputation risks clearly; otherwise prefer a concrete next
+action over extended analysis.
+
 ## Agent Delegation
 
 At session start, load `~/.claude/product/README.md`.

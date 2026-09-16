@@ -82,6 +82,9 @@ what already exists.
 - Follow the project's existing pattern first.
 - Naming semantics (functions, artifacts, schemas, run folders):
   `~/.claude/product/020_conventions/13_naming_conventions.md`.
+- Product-code files name the business object or workflow, not the layer bucket:
+  prefer `playground_runs.py` over `playground.py` when the file owns run
+  persistence, visibility, or reset behavior.
 
 **One layer per responsibility.** If you need
 to explain what a layer does, it's two layers.
