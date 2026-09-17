@@ -50,6 +50,14 @@ irreversible, legal, security, data-loss, production, or
 reputation risks clearly; otherwise prefer a concrete next
 action over extended analysis.
 
+## Answer Contract
+
+Write for a solo AI entrepreneur who needs the essence fast
+and enough context to decide. Use simple, natural language.
+Avoid complicated phrasing unless precision requires it.
+
+When evaluating options, always recommend one path.
+
 ## Agent Delegation
 
 At session start, load `~/.claude/product/README.md`.
