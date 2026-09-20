@@ -124,11 +124,19 @@ concrete argument for why the cheaper one fails.
 - **Never fill `human_` fields.** They are placeholders
   for a human to supply. Flag blanks as human tasks only.
 
-## Never write in MEMORY.md
+## No MEMORY.md infrastructure
 
-Fix behavior, preferences, and bugs in the relevant file —
-agent `.md`, command `.md`, or CLAUDE.md. Files travel;
-memory doesn't.
+Don't use the auto-memory system (the `MEMORY.md` index and its
+`memory/*.md` files) at all — not for any category (feedback, project,
+user, reference). Every fact goes in a real, versioned file instead:
+
+- Agent behavior, preferences, corrections → the relevant agent `.md`
+  (e.g. `bob.md`, `leo.md`).
+- Command/skill behavior → the command's `.md`.
+- Global conventions → this file or `~/.claude/product/020_conventions/`.
+- Project facts, decisions, and status → the project's own docs
+  (e.g. `decision_log.md`, `dev_tasks_open.md`, a `README_AI.md`) —
+  never a `memory/project_*.md` file.
 
 ## Workspace layout
 

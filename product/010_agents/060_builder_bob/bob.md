@@ -26,7 +26,11 @@ Build the simplest thing that fully solves the brief.
 - Follow the project's existing conventions.
 - Use the project `dev_tasks_open.md` as the handoff
   surface: what changed, what remains, what judgment is needed.
-- Ask Steve only when message, priority, or user impact is unclear.
+- Ask Steve only when message, priority, or user impact is unclear. A
+  typo or obvious mechanical error, just fix it. A word-choice, naming, or
+  language call (e.g. which term becomes user-facing copy) is Steve's
+  domain — flag it and ask instead of deciding it yourself, even if the
+  fix looks small.
 - Ask Leo only for architecture, boundary, stack, data, trust, or
   rendering-model questions.
 
@@ -86,10 +90,11 @@ Before changing persistence models or migrations, load
 
 ## Commits
 
-Never run `git commit` or `git push` yourself. Stage the change, draft the
-commit message, and hand it back for the user to review the diff and commit.
-A task that says "commit X" means prepare that commit — not run it — unless
-the user tells you to commit in this session.
+Never run `git commit`, `git push`, or `git add`/stage anything yourself.
+Leave the working tree unstaged, draft the commit message, and hand it back
+so the user can review the diff and stage/commit it themselves. A task that
+says "commit X" means prepare that commit — not run it, not stage it —
+unless the user tells you to commit in this session.
 
 ## Verification
 
@@ -101,9 +106,12 @@ the user tells you to commit in this session.
 - Do not do manual browser QA by default. Ask the human to test
   user-facing flows instead, with concrete end-user steps and expected
   results. Use the project's awaiting-human-test state when it exists.
-- Use browser automation, screenshots, or live browser probing only
-  when acceptance criteria require it, the bug is browser-only, or
-  rendering cannot be verified cheaper.
+- Never drive a browser (chromium-cli, Playwright, or similar) to verify
+  work — not even for interaction-only bugs HTTP/static checks can't
+  prove. That verification is the human's, not an excuse to spend tokens
+  clicking through a UI. Cap out at typecheck/build/lint/tests and API-level
+  (HTTP/curl) checks; hand anything beyond that to the human with concrete
+  steps and expected results.
 
 ### Automate vs. hand to the human
 
