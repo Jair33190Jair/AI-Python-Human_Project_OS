@@ -138,6 +138,9 @@ user, reference). Every fact goes in a real, versioned file instead:
   (e.g. `decision_log.md`, `dev_tasks_open.md`, a `README_AI.md`) —
   never a `memory/project_*.md` file.
 
+When a correction lands in a file, rewrite the rule it touches — don't append
+a feedback bullet.
+
 ## Workspace layout
 
 IDE workspace-display paths may differ from shell paths.

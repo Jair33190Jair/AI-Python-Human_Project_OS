@@ -81,6 +81,13 @@ Mark deliberate duplicates: `<!-- canonical: path/to/source.md -->`
 Acceptable: short context-setting sentences; safety or compliance
 constraints repeated at point of use.
 
+## Rewrite, Don't Append
+
+Before adding, reread the section. A correction or new idea replaces or merges
+into the rule it touches. Add a rule or file only if nothing existing can
+absorb it. Net length stays flat or shrinks. Exception: dated records
+(meeting notes, decision logs, task queue).
+
 ## Chain Depth
 
 1 hop ≈ 95% · 2 hops ≈ 85% · 3+ hops: unreliable.
@@ -119,6 +126,7 @@ Run after every markdown write or edit.
 3. Is it already stated or linked elsewhere?
 4. Can headings, bullets, steps, or examples be merged or removed?
 5. Did the edit add an unnecessary abstraction or layer?
+6. Could this be an edit to an existing line instead of a new one?
 
 The target is the shortest unambiguous contract. Trim unless removing a
 safety/legal/security constraint, a source or ownership marker, or a decision
